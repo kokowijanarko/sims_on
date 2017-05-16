@@ -1,0 +1,3 @@
+29/05/2016 - koko
+CREATE TABLE `db_admin`.`inv_mass_price`( `massprice_id` INT NOT NULL AUTO_INCREMENT, `massprice_inv_id` INT, `massprice_range_start` INT, `massprice_range_end` INT, `massprice_price` INT, PRIMARY KEY (`masssprice_id`) ); 
+ALTER TABLE `db_admin`.`inv_mass_price` ADD FOREIGN KEY (`massprice_inv_id`) REFERENCES `db_admin`.`inv_inventory`(`inv_id`) ON UPDATE RESTRICT ON DELETE RESTRICT; 
