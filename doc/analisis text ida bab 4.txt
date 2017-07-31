@@ -1,0 +1,10 @@
+bab 4 
+point analisis sistem
+- langkah apa yang digunakan dalam mengolah data 
+- dimana peneliti melakukan penelitian,
+  kenapa menggunakan k-mean dalam melakukan penelitian?
+	(dalam hal ini jelasin keunggulan k-mean dalam mengolah data tsb, dan apa pengaruh
+	 melakukan penelitian menggunakan k-mean terhadap data dan tempat penelitian
+	    (dalam artian seberapa besar pengaruh pengolahan ata menggunakan metode k-mean))
+- 
+  

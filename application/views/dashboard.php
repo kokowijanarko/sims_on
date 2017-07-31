@@ -107,13 +107,25 @@ $this->load->view('template/js');
 
 <script type="text/javascript">
 	jQuery(function($) {
-		var param = [
-				{label: "Download Sales", value: 150},
-				{label: "In-Store Sales", value: 10},
-				{label: "Mail-Order Sales", value: 10}
-			];
+		$.ajax({
+			url:'<?php echo site_url('dashboard/get_top5/')?>'
+		}).success(function(result){
+			result = JSON.parse(result);
+			console.log(result);
+			
+			var params = [];
+			$.each(result,function(i){
+				var product = result[i]['product_name'];
+				var selling_value = result[i]['jumlah'];
+				
+				params[i] = {label:product, value:selling_value}
+				
+			})	
+			console.log(params);
+			donut('donut-example', params);
+		});
 		
-		donut('donut-example', param);
+		
 		
 		// Get context with jQuery - using jQuery's .get() method.
 		var salesChartCanvas = $("#salesChart").get(0).getContext("2d");
