@@ -31,7 +31,7 @@
         <ul class="sidebar-menu">
             <li class="header">MAIN MENU</li>
             <li id="menu_dashboard" class="treeview">
-                <a href="<?php  echo site_url('dashboard1')?>">
+                <a href="<?php  echo site_url('dashboard')?>">
                     <i class="fa fa-dashboard"></i> 
 					<span>Home</span>
                 </a>

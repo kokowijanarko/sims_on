@@ -10,7 +10,7 @@ class Auth extends CI_Controller {
 	
 	public function index(){
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2 || $this->session->userdata('level') == 3){
-			redirect('dashboard1');
+			redirect('dashboard');
 		}else{
 			$this->load->view('login');
 		}		
@@ -19,7 +19,7 @@ class Auth extends CI_Controller {
 	public function login(){
 		$auth = $this->authex->login($_POST['key'], $_POST['password']);
 		if($auth){
-			redirect('dashboard1');			
+			redirect('dashboard');			
 		}else{
 			redirect(site_url(''));
 		}
