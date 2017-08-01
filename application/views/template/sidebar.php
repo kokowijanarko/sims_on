@@ -39,7 +39,7 @@
             <li id="menu_inventory" class="treeview">
                 <a href="<?php echo site_url('inventory')?>">
                     <i class="fa fa-files-o"></i>
-                    <span>Inventaris</span>
+                    <span>Produk</span>
                 </a>
                 
             </li>
