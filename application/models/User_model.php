@@ -7,15 +7,12 @@ class User_model extends CI_Model
 	public function getUser(){
 		$query = $this->db->query("
 			SELECT
-			a.`user_id`,
-			a.`user_name`,
-			a.`user_username`,
-			a.`user_level_id`,
-			b.`level_name`,
-			a.`user_photo_name`
-
-		FROM `dev_user` a
-		JOIN dev_level b ON a.`user_level_id` = b.`level_id`
+			a.`id_user`,
+			a.`nama_user`,			 
+			a.`level`,
+			IF(a.`level` = 1, 'root', (IF(a.`level` = 2, 'admin', 'owner' )) ) as `level_name`,
+			a.`photo`
+		FROM `user` a	 
 		");
 		$result = $query->result();
 		return $result;
@@ -24,17 +21,14 @@ class User_model extends CI_Model
 	public function getDetailUser($id){
 		$query = $this->db->query("
 			SELECT
-			a.`user_id`,
-			a.`user_name`,
-			a.`user_username`,
-			a.`user_password`,
-			a.`user_level_id`,
-			a.`user_desc`,
-			b.`level_name`,			
-			a.`user_photo_name`
-		FROM `dev_user` a
-		LEFT JOIN dev_level b ON a.`user_level_id` = b.`level_id`
-		WHERE a.`user_id`= $id
+			a.`id_user`,
+			a.`nama_user`,			 
+			a.`password`,
+			a.`level`,
+			IF(a.`level` = 1, 'root', (IF(a.`level` = 2, 'admin', 'owner' )) ) as `level_name`,			
+			a.`photo`
+		FROM `user` a
+		WHERE a.`id_user`= $id
 		");
 		$result = $query->row();
 		return $result;
@@ -45,16 +39,16 @@ class User_model extends CI_Model
 		return $query->result();
 	}
 	public function insertUser($param){
-		$query = $this->db->insert('dev_user', $param);
+		$query = $this->db->insert('user', $param);
 		return $query;		
 	}
-	public function updateUser($param, $user_id){
-		$query = $this->db->update('dev_user', $param, array('user_id'=>$user_id));		
+	public function updateUser($param, $id_user){
+		$query = $this->db->update('user', $param, array('id_user'=>$id_user));		
 		return $query;
 		
 	}
     public function deleteInv($id){
-		$query = $this->db->delete('dev_user', array('user_id' => $id));
+		$query = $this->db->delete('user', array('id_user' => $id));
 		return $query;
 	}
 

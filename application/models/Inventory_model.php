@@ -19,37 +19,24 @@ class Inventory_model extends CI_Model
 			extract($filter);
 			
 			if(!empty($product || $product !== '')){
-				$str .= "AND a.product_name LIKE '%$product%' ";
+				$str .= "AND a.nama_prod LIKE '%$product%' ";
 			}
 			
 			if(!empty($category || $category !== '')){
-				$str .= "AND a.`product_category_id` = $category ";
+				$str .= "AND a.`jenis_prod` = $category ";
 			}		
 			
 		}
 		
-		
-		
-		
-		
 		$query_str = "
 			SELECT
-				a.`product_id`,
-				a.`product_name`,
-				a.`product_category_id`,
-				b.`category_name`,
-				a.`product_price_base`,
-				a.`product_price`,
-				a.`product_stock`,
-				a.`product_desc`,
-				IFNULL(c.`user_name`, '~') AS insert_user,
-				IF(a.`insert_timestamp` = '0000-00-00 00:00:00', '~', a.`insert_timestamp`) AS insert_timestamp,
-				IFNULL(d.`user_name`, '~') AS update_user,
-				IF(a.`update_timestamp` = '0000-00-00 00:00:00', '~', a.`update_timestamp`) AS update_timestamp
-			FROM prod_products a
-			LEFT JOIN prod_category b ON b.`category_id` = a.`product_category_id`
-			LEFT JOIN dev_user c ON c.`user_id` = a.`insert_user_id`
-			LEFT JOIN dev_user d ON d.`user_id` = a.`update_user_id`	
+				a.`id_prod`,
+				a.`nama_prod`,
+				IF(a.`jenis_prod` = 1, 'gamis', 'jilbab') as jenis_prod,
+				a.jenis_prod as `id_jenis`,
+				a.`harga`,
+				a.`stok`
+			FROM produk a
 			WHERE
 				1=1
 				--search--
@@ -65,23 +52,13 @@ class Inventory_model extends CI_Model
 	public function getProductDetailById($id){		
 		$query = $this->db->query("
 			SELECT
-				a.`product_id`,
-				a.`product_name`,
-				a.`product_category_id`,
-				b.`category_name`,
-				a.`product_price_base`,
-				a.`product_price`,
-				a.`product_stock`,
-				a.`product_desc`,
-				IFNULL(c.`user_name`, '~') AS insert_user,
-				IF(a.`insert_timestamp` = '0000-00-00 00:00:00', '~', a.`insert_timestamp`) AS insert_timestamp,
-				IFNULL(d.`user_name`, '~') AS update_user,
-				IF(a.`update_timestamp` = '0000-00-00 00:00:00', '~', a.`update_timestamp`) AS update_timestamp
-			FROM prod_products a
-			LEFT JOIN prod_category b ON b.`category_id` = a.`product_category_id`
-			LEFT JOIN dev_user c ON c.`user_id` = a.`insert_user_id`
-			LEFT JOIN dev_user d ON d.`user_id` = a.`update_user_id`
-			WHERE a.product_id = $id
+				a.`id_prod`,
+				a.`nama_prod`,
+				a.`jenis_prod`,
+				a.`harga`,
+				a.`stok`
+			FROM produk a
+			WHERE a.id_prod = $id
 			
 		");
 		$result = $query->row();
@@ -95,20 +72,20 @@ class Inventory_model extends CI_Model
 	}
 	
 	public function insertProduct($param){
-		$query = $this->db->insert('prod_products', $param);
+		$query = $this->db->insert('produk', $param);
 		
 		return $query;
 		
 	}
 	public function updateProduct($param_inv, $id){
 		//$query = $this->db->where('inv_id', $id);
-		$query = $this->db->update('prod_products', $param_inv, array('product_id'=>$id));		
+		$query = $this->db->update('produk', $param_inv, array('id_prod'=>$id));		
 		return $query;
 		
 	}
 	
 	public function deleteInv($id){
-		$query = $this->db->delete('prod_products', array('product_id' => $id));
+		$query = $this->db->delete('produk', array('id_prod' => $id));
 		return $query;
 	}
 	

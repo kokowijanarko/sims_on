@@ -18,11 +18,6 @@ $this->load->view('template/sidebar');
         Order
         <small></small>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Examples</a></li>
-        <li class="active">Blank page</li>
-    </ol>
 </section>
 <!-- Main content -->
 <section class="content">
@@ -51,7 +46,7 @@ $this->load->view('template/sidebar');
 								<option value=''>--Pilih--</option>
 								<?php
 									foreach($produk as $val){
-										echo '<option value="'.$val->inv_id.'|'.$val->inv_price.'">'.$val->inv_name .'</option>';
+										echo '<option value="'.$val->id_prod.'|'.$val->harga.'">'.$val->nama_prod .'</option>';
 									}
 								?>								
 							</select>
@@ -73,12 +68,6 @@ $this->load->view('template/sidebar');
 								<span class="input-group-addon">Biji</span>
 							</div>
 						</div>
-						
-						<div class="form-group">
-							<label>Catatan</label>
-							<textarea id="deskripsi" name="deskripsi" class="form-control" rows="3" placeholder="Enter ..."></textarea>
-						</div>
-						
 						<div class="box-footer">
 							<button id="smt-order" type="submit" class="btn btn-info">Tambah</button>
 						</div>
@@ -105,31 +94,7 @@ $this->load->view('template/sidebar');
 									</div>
 								</td>
 							</tr>
-							<tr>
-								<td>Tanggal Pengambilan</td>
-								<td>:</td>
-								<td>
-									<div class="input-group date">
-										<div class="input-group-addon">
-										<i class="fa fa-calendar"></i>
-										</div>
-										<input type="text" name="ord_date_take" data-date-format="dd-mm-yyyy" class="form-control" id="ord_date_take">
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>Tanggal Lihat Desain</td>
-								<td>:</td>
-								<td>
-									<div class="input-group date">
-										<div class="input-group-addon">
-										<i class="fa fa-calendar"></i>
-										</div>
-										<input type="text" name="ord_date_design" data-date-format="dd-mm-yyyy" class="form-control" id="datepicker">
-									</div>
-								</td>
-							</tr>	
-							<tbody>
+							
 						</table>
 					</div>	
 					<div class="col-md-6">
@@ -150,11 +115,6 @@ $this->load->view('template/sidebar');
 								<td>:</td>
 								<td><div class="form-group"><input class="form-control" id="ord_contact" type="text" name="ord_contact" required></div></td>
 							</tr>
-							<tr>
-								<td>Email</td>
-								<td>:</td>
-								<td><div class="form-group"><input class="form-control" id="ord_email" type="text" name="ord_email" required></div></td>
-							</tr>
 							<tbody>
 						</table>
 					</div>
@@ -166,16 +126,15 @@ $this->load->view('template/sidebar');
 								<th>P r o d u k</th>
 								<th>H a r g a</th>
 								<th>J u m l a h</th>
-								<th class="hidden-450">K e t e r a n g a n</th>
 								<th>S u b - T o t a l</th>
 							</tr>
 							</thead>
 							<tfoot>
 								<tr>
-									<td colspan="5">TOTAL</td>
+									<td colspan="4">TOTAL</td>
 									<td id="total"></td>
 								</tr>
-								<tr>
+								<tr class="hide">
 									<td colspan="2">Pembayaran</td>	
 									<td colspan="4">
 										<div>
@@ -186,7 +145,7 @@ $this->load->view('template/sidebar');
 										</div>
 									</td>	
 								</tr>
-								<tr>
+								<tr class="hide">
 									<td colspan="2">Cara Pembayaran</td>	
 									<td colspan="4">
 										<div>
@@ -200,19 +159,19 @@ $this->load->view('template/sidebar');
 										</div>
 									</td>	
 								</tr>								
-								<tr id="tr_dp">
+								<tr id="tr_dp" class="hide">
 									<td colspan="2">DP</td>
 									<td colspan="4"><input type="text" name="down_payment" id="down_payment"></td>
 								</tr>
-								<tr id="tr_kurang">
+								<tr id="tr_kurang" class="hide">
 									<td colspan="2">Kurang</td>
 									<td colspan="4"><input readonly type="text" name="minus" id="minus"></td>
 								</tr>
-								<tr>
+								<tr class="hide">
 									<td colspan="2">Bayar</td>
 									<td colspan="4"><input type="text"  name="cash" id="cash" required></td>
 								</tr>
-								<tr>
+								<tr class="hide">
 									<td colspan="2">Kembali</td>
 									<td colspan="4"><input readonly type="text" min="0" value="0" name="cash_back" id="cash_back"></td>
 								</tr>
@@ -258,16 +217,16 @@ $this->load->view('template/js');
 		// $('#cash_back').mask('000.000.000.000.000,-', {reverse: true});
 		// $('#cash').mask('000.000.000.000.000,-', {reverse: true});
 		
-		$('input:radio[name=payment][id=payment_lunas]').prop('checked', true);
-		$('input:radio[name=payment_way][id=payment_cash]').prop('checked', true);
+		// $('input:radio[name=payment][id=payment_lunas]').prop('checked', true);
+		// $('input:radio[name=payment_way][id=payment_cash]').prop('checked', true);
 		
-		if($('input:radio[name=payment][id=payment_lunas]').is(':checked') == true){
-			var xxx = $('input:radio[name=payment][id=payment_lunas]').val();			
-		}
-		if($('input:radio[name=payment][id=payment_dp]').is(':checked') == true){
-			xxx = $('input:radio[name=payment][id=payment_dp]').val();
-		}	
-		showHide(xxx);
+		// if($('input:radio[name=payment][id=payment_lunas]').is(':checked') == true){
+			// var xxx = $('input:radio[name=payment][id=payment_lunas]').val();			
+		// }
+		// if($('input:radio[name=payment][id=payment_dp]').is(':checked') == true){
+			// xxx = $('input:radio[name=payment][id=payment_dp]').val();
+		// }	
+		// showHide(xxx);
 		var product_name = [];
 		var product_id = [];
 		var price = [];
@@ -285,7 +244,6 @@ $this->load->view('template/js');
 			var prod_price = prod[1];
 			var prod_id = prod[0];
 			var prod_quantity = $('#jumlah').val(); 
-			var prod_desc = $('#deskripsi').val(); 
 			var prod_sub_total = prod_price * prod_quantity;
 						
 			if(prod_id != ""){
@@ -294,7 +252,6 @@ $this->load->view('template/js');
 				price.push(prod_price);
 				quantity.push(prod_quantity);
 				sub_total.push(prod_sub_total);
-				desc.push(prod_desc);
 			}			
 			var total = 0;
 			for (var i = 0; i < sub_total.length; i++) {
@@ -310,7 +267,6 @@ $this->load->view('template/js');
 				$line.append( $( "<td></td>" ).html(product_name[i]) );
 				$line.append( $( "<td></td>" ).html(price[i]) );
 				$line.append( $( "<td></td>" ).html(quantity[i]) );
-				$line.append( $( "<td class='hidden-450'></td>" ).html(desc[i]) );
 				$line.append( $( "<td></td>" ).html(sub_total[i]) );
 				$table.append($line);
 				console.log($line);

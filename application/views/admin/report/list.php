@@ -18,7 +18,7 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Job Order / Invoice
+        Daftar Penjualan
         <small></small>
     </h1>
     
@@ -30,7 +30,7 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
     <!-- Default box -->
 	<div class="box">
 		<div class="box-header with-border">
-            <h3 class="box-title">Cari Job Order</h3>
+            <h3 class="box-title">Cari</h3>
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
@@ -65,11 +65,11 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 										foreach($user as $val){
 											$cek = '';
 											if(isset($post['user'])){
-												if($post['user'] == $val->user_id){
+												if($post['user'] == $val->id_user){
 													$cek = 'selected';
 												}
 											}
-											echo '<option value="'. $val->user_id .'" '. $cek .'>'.$val->user_full_name.'</option>';
+											echo '<option value="'. $val->id_user .'" '. $cek .'>'.$val->nama_user.'</option>';
 										}
 									?>
 								</select>
@@ -94,7 +94,7 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 	</div>
 	<div class="box">
 		<div class="box-header with-border">
-            <h3 class="box-title">Daftar Job Order</h3>
+            <h3 class="box-title">Daftar Penjualan</h3>
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
@@ -110,12 +110,13 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 			<table id="tbl-invoice" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                  <th>No</th>
-                  <th>Nomor Invoice</th>
-                  <th>Cara Pembayaran</th>
-                  <th>Total</th>
-                  <th>Kurang</th>
-                  <th>FO</th>
+					<th>No</th>
+					<th>Nomor Invoice</th>
+					<th>Atas Nama</th>				  
+					<th>Alamat</th>		
+					<th>tanggal</th>		
+					<th>Total</th>
+					<th>User</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -127,11 +128,12 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 							echo'
 								<tr>
 									<td>'. $no .'</td>
-									<td>'. $val->order_code .'</td>
-									<td>'. $val->payment_way .'</td>
-									<td>'. $val->order_amount .'</td>
-									<td>'. $val->order_cash_minus .'</td>
-									<td>'. $val->user_full_name .'</td>
+									<td>'. $val->kode_invoice .'</td>
+									<td>'. $val->nama_cust .'</td>
+									<td>'. $val->alamat_cust .'</td>
+									<td>'. $val->tgl_trans .'</td>
+									<td>'. $val->total .'</td>
+									<td>'. $val->nama_user .'</td>
 								</tr>
 							';
 							
@@ -143,16 +145,6 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 				</tbody>
               </table>
 			  </div>
-				<br>
-				<table class="table-bordered table-hover" width="30%">
-					<thead>
-					<tr>
-					  <td>Omset</td>
-					  <td>:</td>
-					  <td><?php echo $omset?></td>
-					</tr>
-					</thead>
-				</table>
         </div><!-- /.box-body -->
         <div class="box-footer">
             

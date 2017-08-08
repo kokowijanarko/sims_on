@@ -19,51 +19,41 @@ class Cashier_model extends CI_Model
 		return $query;
 	}
 	public function getInventory(){		
-		$query = $this->db->query('
+		$query = $this->db->query("
 			SELECT
-				a.inv_id,
-				a.inv_name,
-				a.inv_category_id,
-				a.inv_type_id,
-				a.inv_desc,
-				a.inv_price,
-				a.inv_stock,
-				b.type_name,
-				c.category_name
-			FROM inv_inventory a 
-			LEFT JOIN inv_ref_inventory_category c ON c.category_id = a.inv_category_id 
-			LEFT JOIN inv_ref_inventory_type b ON b.type_id = a.inv_type_id
-			ORDER BY inv_name
+				a.`id_prod`,
+				a.`nama_prod`,
+				IF(a.`jenis_prod` = 1, 'gamis', 'jilbab') as jenis_prod,
+				a.jenis_prod as `id_jenis`,
+				a.`harga`,
+				a.`stok`
+			FROM produk a
+			ORDER BY a.nama_prod
 			
-		');
+		");
 		$result = $query->result();
 		return $result;
 	}
 	
 	public function getInvDetailById($id){		
-		$query = $this->db->query('
+		$query = $this->db->query("
 			SELECT
-				a.inv_id,
-				a.inv_name,
-				a.inv_category_id,
-				a.inv_type_id,
-				a.inv_desc,
-				a.inv_price,
-				a.inv_stock,
-				b.type_name,
-				c.category_name
-			FROM inv_inventory a 
-			LEFT JOIN inv_ref_inventory_category c ON c.category_id = a.inv_category_id 
-			LEFT JOIN inv_ref_inventory_type b ON b.type_id = a.inv_type_id
-			WHERE a.inv_id = "'.$id.'"
+				a.`id_prod`,
+				a.`nama_prod`,
+				IF(a.`jenis_prod` = 1, 'gamis', 'jilbab') as jenis_prod,
+				a.jenis_prod as `id_jenis`,
+				a.`harga`,
+				a.`stok`
+			FROM produk a
+			WHERE a.id_prod = $id
 			
-		');
+		");
 		$result = $query->row();
 		return $result;
 	}
 	
 	public function getLastOrderCode($date){
-		$query = $this->db->query('SELECT order_code AS order_code FROM cash_order WHERE insert_timestamp LIKE "%'. $date .'%" ORDER BY order_id DESC LIMIT 1');
+		$query = $this->db->query('SELECT kode_invoice AS order_code FROM penjualan WHERE tgl_trans LIKE "%'. $date .'%" ORDER BY id_penj DESC LIMIT 1');
 		$order_code = $query->row();
 		if($order_code){
 			return $order_code->order_code;

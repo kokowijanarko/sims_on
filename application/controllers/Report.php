@@ -49,8 +49,7 @@ class Report extends CI_Controller {
 			$data['invoice'] = $this->report_model->getTransactionByDate($filter);
 			// var_dump($this->db->last_query());
 			$data['user'] = $this->report_model->getUser();
-			//var_dump($data);die;
-			
+			// var_dump($data);die;			
 			$this->load->view('admin/report/list', $data);
 		}else{
 			redirect(site_url(''));

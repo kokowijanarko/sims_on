@@ -7,29 +7,24 @@ class Report_model extends CI_Model
 	
     public function getTransactionByDate($filter){		
 		$sql = '
-			SELECT 
-				a.`order_id`,
-				a.`order_code`,
-				a.`order_cash_minus`,
-				a.`order_amount`,
-				a.`order_custommer_name`,
-				a.`order_date_order`,
-				a.`order_date_take`,
-				a.`order_address`,
-				a.`order_contact`,
-				a.`insert_user_id`,
-				a.`insert_timestamp`,	
-				a.`order_type`,
-				IF(a.`order_payment_way`=0, "Cash", 
-					(IF(a.`order_payment_way`=1, "Transfer", 
-						(IF(a.`order_payment_way`=2, "Debit", "-"))))) AS `payment_way`,
-				b.`user_id`,
-				b.`user_full_name`,
-				b.`user_level_id`,
-				c.`level_name`
-			FROM `cash_order` a
-			JOIN `user` b ON b.`user_id` = a.`insert_user_id`
-			JOIN `user_ref_level` c ON c.`level_id` = b.`user_level_id`
+			SELECT
+				a.`id_penj`,
+				a.`id_cust`,
+				a.`kode_invoice`,
+				c.`nama_cust`,
+				c.`alamat_cust`,
+				c.`nohp_cust`,
+				a.`tgl_trans`,
+				(SELECT SUM(total) FROM detail_penjualan WHERE id_penj = a.`id_penj`) AS `total_amount`,
+				a.`biaya_kirim`,	
+				a.`diskon`,
+				a.`ttl_byr`,
+				a.`id_user`,
+				b.`nama_user`,
+				(((SELECT SUM(total) FROM detail_penjualan WHERE id_penj = a.`id_penj`) + a.`biaya_kirim`) - a.`diskon` ) AS `total`
+			FROM penjualan a
+			LEFT JOIN `user` b ON b.`id_user` = a.`id_user`
+			LEFT JOIN customer c ON c.`id_cust` = a.`id_cust`
 			WHERE 
 				1=1
 				---search---
@@ -37,10 +32,10 @@ class Report_model extends CI_Model
 		
 		$str='';
 		if(!empty($filter['date']) && $filter['date'] != 'all'){
-			$str .= " AND a.`order_date_order` LIKE '%". $filter['date'] ."%'";
+			$str .= " AND a.`tgl_trans` LIKE '%". $filter['date'] ."%'";
 		}
 		if(!empty($filter['user']) && $filter['user'] !== 'all'){
-			$str .= " AND b.`user_id` =". $filter['user'];
+			$str .= " AND b.`id_user` =". $filter['user'];
 		}
 		
 		$sql = str_replace('---search---', $str, $sql);

@@ -28,16 +28,27 @@ class Inventory extends CI_Controller {
 			}			
 			$data['list'] = $this->Inventory_model->getProduct($filter);
 			// var_dump($data);die;
-			$cat = $this->Inventory_model->getProductCategory();
+			// $cat = $this->Inventory_model->getProductCategory();
 			
-			$category = array();
-			foreach($cat as $key=>$val){
-				$category[$key]['id'] = $val->category_id; 
-				$category[$key]['parent_id'] = $val->category_parent_id; 
-				$category[$key]['name'] = $val->category_name; 
-			}
+			$category = array(
+				array(
+					'id'=>1,
+					'name'=>'gamis'
+				),
+				array(
+					'id'=>2,
+					'name'=>'jilbab'
+				),			
+			);
+			$data['category'] = $category;
+			// foreach($cat as $key=>$val){
+				// $category[$key]['id'] = $val->category_id; 
+				// $category[$key]['parent_id'] = $val->category_parent_id; 
+				// $category[$key]['name'] = $val->category_name; 
+			// }
 			
-			$data['category'] = $this->treeView($category);
+			
+			// $data['category'] = $this->treeView($category);
 			$data['filter'] = $filter;
 			// var_dump($data);die;
 			$this->load->view('admin/inventory/list', $data);
@@ -49,16 +60,25 @@ class Inventory extends CI_Controller {
 	public function add(){
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
 			
-			$cat = $this->Inventory_model->getProductCategory();
+			// $cat = $this->Inventory_model->getProductCategory();
 			
-			$category = array();
-			foreach($cat as $key=>$val){
-				$category[$key]['id'] = $val->category_id; 
-				$category[$key]['parent_id'] = $val->category_parent_id; 
-				$category[$key]['name'] = $val->category_name; 
-			}
+			$category = array(
+				array(
+					'id'=>1,
+					'name'=>'gamis'
+				),
+				array(
+					'id'=>2,
+					'name'=>'jilbab'
+				),			
+			);
+			// foreach($cat as $key=>$val){
+				// $category[$key]['id'] = $val->category_id; 
+				// $category[$key]['parent_id'] = $val->category_parent_id; 
+				// $category[$key]['name'] = $val->category_name; 
+			// }
 			
-			$data['category'] = $this->treeView($category);
+			$data['category'] = $category;
 
 			
 			// var_dump($data);die;
@@ -72,17 +92,17 @@ class Inventory extends CI_Controller {
 	
 	public function edit($id){
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
-			$cat = $this->Inventory_model->getProductCategory();
-			
-			$category = array();
-			foreach($cat as $key=>$val){
-				$category[$key]['id'] = $val->category_id; 
-				$category[$key]['parent_id'] = $val->category_parent_id; 
-				$category[$key]['name'] = $val->category_name; 
-			}
-			
-			$data['category'] = $this->treeView($category);
-			
+			$category = array(
+				array(
+					'id'=>1,
+					'name'=>'gamis'
+				),
+				array(
+					'id'=>2,
+					'name'=>'jilbab'
+				),			
+			);
+			$data['category'] = $category;			
 			$data['detail'] = $this->Inventory_model->getProductDetailById($id);
 			// var_dump($data['detail']);die;
 			$this->load->view('admin/inventory/edit', $data);
@@ -98,14 +118,10 @@ class Inventory extends CI_Controller {
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
 			//var_dump($_POST);//die;
 			$param_inv = array(
-				'product_name' => $_POST['produk'],
-				'product_category_id' => $_POST['category'],
-				'product_price' => $_POST['harga'],
-				'product_price_base' => $_POST['harga_dasar'],
-				'product_stock' => $_POST['stok'],
-				'product_desc' => $_POST['deskripsi'],
-				'insert_user_id' => $this->session->userdata('user_id'),
-				'insert_timestamp'=> date('Y-m-h h:i:s')
+				'nama_prod' => $_POST['produk'],
+				'jenis_prod' => $_POST['category'],
+				'harga' => $_POST['harga'],
+				'stok' => $_POST['stok']
 			);
 			
 			// var_dump($param_inv);die;
@@ -127,14 +143,10 @@ class Inventory extends CI_Controller {
 	public function doEdit(){
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
 			$param_inv = array(
-				'product_name' => $_POST['produk'],
-				'product_category_id' => $_POST['category'],
-				'product_price' => $_POST['harga'],
-				'product_price_base' => $_POST['harga_dasar'],
-				'product_stock' => $_POST['stok'],
-				'product_desc' => $_POST['deskripsi'],
-				'update_user_id' => $this->session->userdata('user_id'),
-				'update_timestamp'=> date('Y-m-h h:i:s')
+				'nama_prod' => $_POST['produk'],
+				'jenis_prod' => $_POST['category'],
+				'harga' => $_POST['harga'],
+				'stok' => $_POST['stok']
 			);
 			$id=$_POST['id'];
 			$result = $this->Inventory_model->updateProduct($param_inv, $id);

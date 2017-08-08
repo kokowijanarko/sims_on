@@ -9,6 +9,7 @@ class Dashboard extends CI_Controller {
 		$this->load->library('authex');
 		$this->load->library('kmeans');
 		$login = $this->authex->logged_in();
+		// var_dump($login, site_url());die;
 		if(!$login){
 			redirect(site_url(''));
 		}

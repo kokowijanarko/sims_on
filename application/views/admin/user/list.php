@@ -48,7 +48,6 @@ $this->load->view('template/sidebar');
                 <tr>
                   <th>No</th>
                   <th>Photo</th>
-                  <th>Nama Lengkap</th>
                   <th>Username</th>
                   <th>Level</th>
                   <th>Aksi</th>
@@ -58,12 +57,11 @@ $this->load->view('template/sidebar');
 					<?php
 						$no=1;
 						foreach($list as $value){
-							$photo = !empty($value->user_photo_name)?$value->user_photo_name:'default.jpg';
+							$photo = !empty($value->photo)?$value->photo:'default.jpg';
 							echo '<tr>';
 							echo '<td>'.$no.'</td>';
 							echo '<td> <img width="100px" src="'. base_url('assets/user_img/'.$photo).'"></td>';
-							echo '<td>'.$value->user_name.'</td>';
-							echo '<td>'.$value->user_username.'</td>';
+							echo '<td>'.$value->nama_user.'</td>';
 							echo '<td>'.$value->level_name.'</td>';
 							echo '<td>
 								<div class="btn-group">
@@ -73,8 +71,8 @@ $this->load->view('template/sidebar');
 										<span class="sr-only">Toggle Dropdown</span>
 									</button>
 									<ul class="dropdown-menu" role="menu">
-										<li><a href="'.site_url('user/edit/'.$value->user_id).'">Edit</a></li>
-										<li><a href="'.site_url('user/doDelete/'.$value->user_id).'">Hapus</a></li>
+										<li><a href="'.site_url('user/edit/'.$value->id_user).'">Edit</a></li>
+										<li><a href="'.site_url('user/doDelete/'.$value->id_user).'">Hapus</a></li>
 									</ul>
 								</div>
 							

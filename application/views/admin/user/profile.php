@@ -32,18 +32,9 @@ $this->load->view('template/sidebar');
 					<form role="form" method="post" action="<?php echo site_url('user/doEditProffile')?>" enctype="multipart/form-data">
 					<input type="hidden" value="<?php echo $detail->user_id?>" name="id" id="id">
 						<div class="form-group">
-							<label>Nama Lengkap</label>
-							<input type="text" value="<?php echo $detail->user_name?>" name="user_name" id="user_name" class="form-control" placeholder="Nama Lengkap">
-						</div>
-						
-						<div class="form-group">
 							<label>Username</label>
 							<input type="text" value="<?php echo $detail->user_username?>" name="user_username" id="user_username" class="form-control" placeholder="Level">
-						</div>						
-						<div class="form-group">
-							<label>Deskripsi</label>
-							<textarea id="deskripsi" name="deskripsi" class="form-control" rows="3" placeholder="Enter ..."><?php echo $detail->user_desc?></textarea>
-						</div>
+						</div>				
 						<div class="form-group">
 							<label>Password baru</label>
 							<input type="password" name="user_password" id="user_password" class="form-control" placeholder="Password Baru"> *<i>kososngkan jika tidak ingin merubah password</i>
@@ -58,14 +49,14 @@ $this->load->view('template/sidebar');
 						</div>
 						<?php
 							$hide_foto = '';
-							if(empty($detail->user_photo_name) || is_null($detail->user_photo_name)){
+							if(empty($detail->photo) || is_null($detail->photo)){
 								$hide_foto = 'hide';
 							}
 						?>
 						<div class="form-group">
 							<label>Foto</label>
 							<input type="file" name="photo" id="photo">							
-							<label class="<?php echo $hide_foto ?>" ><img height="100px" src="<?php echo base_url('assets/user_img/'. $detail->user_photo_name)?>"></label>
+							<label class="<?php echo $hide_foto ?>" ><img height="100px" src="<?php echo base_url('assets/user_img/'. $detail->photo)?>"></label>
 						</div>
 						
 						<div class="box-footer">

@@ -62,16 +62,7 @@ $this->load->view('template/sidebar');
 							<label>Harga</label>
 							<div class="input-group">
 								<span class="input-group-addon">Rp</span>
-								<input id="harga_dasar" type="number" name="harga_dasar" pattern="[1-9]" class="form-control">
-								<span class="input-group-addon">.00</span>
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label>Harga Jual</label>
-							<div class="input-group">
-								<span class="input-group-addon">Rp</span>
-								<input id="harga" type="number" name="harga" pattern="[1-9]" class="form-control">
+								<input id="harga_dasar" type="number" name="harga" pattern="[1-9]" class="form-control">
 								<span class="input-group-addon">.00</span>
 							</div>
 						</div>
@@ -84,12 +75,6 @@ $this->load->view('template/sidebar');
 								<span class="input-group-addon">Biji</span>
 							</div>
 						</div>
-						
-						<div class="form-group">
-							<label>Deskripsi</label>
-							<textarea id="deskripsi" name="deskripsi" class="form-control" rows="3" placeholder="Enter ..."></textarea>
-						</div>
-						
 						<div class="box-footer">
 							<button type="cancel" class="btn btn-warning">Batal</button>
 							<button type="submit" class="btn btn-info pull-right">Simpan</button>

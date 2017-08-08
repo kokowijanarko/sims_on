@@ -88,12 +88,8 @@ $this->load->view('template/sidebar');
 					  <th>No</th>
 					  <th width="15%">Produk</th>
 					  <th width="10%">Kategori</th>
-					  <th>Harga Jual</th>
 					  <th>Harga</th>
 					  <th>Stok</th>
-					  <th>Input</th>
-					  <th>Update</th>
-					  <th class="hidden-480">Deskripsi</th>
 					  <th class="action">Aksi</th>
 					</tr>
                 </thead>
@@ -103,14 +99,10 @@ $this->load->view('template/sidebar');
 						foreach($list as $value){
 							echo '<tr>';
 							echo '<td>'.$no.'</td>';
-							echo '<td>'.$value->product_name.'</td>';
-							echo '<td>'.$value->category_name.'</td>';
-							echo '<td>'.number_format($value->product_price, '2', ',', '.') .'</td>';
-							echo '<td>'.number_format($value->product_price_base, '2', ',', '.') .'</td>';
-							echo '<td>'.$value->product_stock.'</td>';
-							echo '<td>'.$value->insert_user.', '.$value->insert_timestamp.'</td>';
-							echo '<td>'.$value->update_user.', '.$value->update_timestamp.'</td>';
-							echo '<td class="hidden-480">'.$value->product_desc.'</td>';
+							echo '<td>'.$value->nama_prod.'</td>';
+							echo '<td>'.$value->jenis_prod.'</td>';
+							echo '<td>'.number_format($value->harga, '2', ',', '.') .'</td>';
+							echo '<td>'.$value->stok.'</td>';
 							echo '<td class = "action">
 								<div class="btn-group">
 									<button type="button" class="btn btn-info btn-flat">Aksi</button>
@@ -119,9 +111,9 @@ $this->load->view('template/sidebar');
 										<span class="sr-only">Toggle Dropdown</span>
 									</button>
 									<ul class="dropdown-menu" role="menu">
-										<li><a href="'.base_url('index.php/inventory/edit/'.$value->product_id).'">Edit</a></li>
-										<li><a href="'.site_url('inventory/doDelete/'.$value->product_id).'">Hapus</a></li>
-										<li class = "hide"><a href="'.site_url('mass_price/listing/'.$value->product_id).'">Lihat Harga Massal</a></li>
+										<li><a href="'.base_url('index.php/inventory/edit/'.$value->id_prod).'">Edit</a></li>
+										<li><a href="'.site_url('inventory/doDelete/'.$value->id_prod).'">Hapus</a></li>
+										<li class = "hide"><a href="'.site_url('mass_price/listing/'.$value->id_prod).'">Lihat Harga Massal</a></li>
 									</ul>
 								</div>
 							

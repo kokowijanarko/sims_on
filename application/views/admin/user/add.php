@@ -38,19 +38,10 @@ $this->load->view('template/sidebar');
 				<div class="col-md-6">
 					<form role="form" method="post" action="<?php echo base_url('index.php/user/doAdd')?>" enctype="multipart/form-data">
 						<div class="form-group">
-							<label>Nama Lengkap</label>
-							<input type="text" name="full_name" id="full_name" class="form-control" placeholder="Nama lengkap">
-						</div>
-						
-						<div class="form-group">
 							<label>Username</label>
 							<input type="text" name="username" id="username" class="form-control" placeholder="Username">
 						</div>
 						
-						<div class="form-group">
-							<label>Email</label>
-							<input type="text" name="email" id="email" class="form-control" placeholder="Username">
-						</div>						
 						
 						<div class="form-group">
 							<label>Level</label>
@@ -58,7 +49,7 @@ $this->load->view('template/sidebar');
 								<option value=''>--Pilih--</option>
 								<?php
 									foreach($level as $lvl){
-										echo '<option value="'.$lvl->level_id .'">'.$lvl->level_name .'</option>';
+										echo '<option value="'.$lvl['id'].'">'.$lvl['name'] .'</option>';
 									}
 								?>
 								
@@ -69,11 +60,6 @@ $this->load->view('template/sidebar');
 						<div class="form-group">
 							<label>Foto</label>
 							<input type="file" name="photo" id="photo">
-						</div>
-						
-						<div class="form-group">
-							<label>Deskripsi</label>
-							<textarea id="deskripsi" name="deskripsi" class="form-control" rows="3" placeholder="Enter ..."></textarea>
 						</div>
 						
 						<div class="box-footer">

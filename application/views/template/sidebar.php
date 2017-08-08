@@ -58,8 +58,7 @@
 					<i class="fa fa-files-o"></i> <span>Laporan</span><i class="fa fa-angle-left pull-right"></i>
                 </a>       
 				<ul id="child_menu_report" class="treeview-menu">
-                    <li id="child_menu_report_laporan_shift" class="hide"><a href="<?php echo site_url('#') ?>"><i class="fa fa-circle-o"></i>Laporan Shift</a></li>
-                    <li id="child_menu_report_laporan_harian"><a href="<?php echo site_url('report/daily_list') ?>"><i class="fa fa-circle-o"></i>Laporan Harian</a></li>
+                    <li id="child_menu_report_laporan_harian"><a href="<?php echo site_url('report/daily_list') ?>"><i class="fa fa-circle-o"></i>Laporan penjualan</a></li>
                 </ul>
             </li>
 			<li id="menu_user" class="treeview">

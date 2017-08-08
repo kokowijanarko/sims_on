@@ -9,6 +9,7 @@ class Auth extends CI_Controller {
     }
 	
 	public function index(){
+		// var_dump($this->session->userdata('level'));die;
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2 || $this->session->userdata('level') == 3){
 			redirect('dashboard');
 		}else{

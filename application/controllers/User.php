@@ -23,7 +23,7 @@ class User extends CI_Controller {
 				$data['message'] = $this->getMessage($_GET['msg']);
 			}
 			$data['list'] = $this->user_model->getUser();
-			//var_dump($data);die;
+			// var_dump($data);die;
 			$this->load->view('admin/user/list', $data);
 		}else{
 			redirect(site_url(''));
@@ -32,7 +32,17 @@ class User extends CI_Controller {
 	
 	public function add(){
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
-			$data['level'] = $this->user_model->getUserLevel();
+			$data['level'] = array(
+				array(
+					'id'=>2, 
+					'name'=>'admin'
+				),
+				array(
+					'id'=>3, 
+					'name'=>'owner'
+				),
+			
+			);
 			//var_dump($data);die;
 			$this->load->view('admin/user/add', $data);
 		}else{
@@ -54,19 +64,18 @@ class User extends CI_Controller {
 	}
 	
 	public function doAdd(){
-			var_dump($_POST, $_FILES);
+			// var_dump($_POST, $_FILES);
 			if(!empty($_POST)){
 				$this->db->trans_start();
 				$password = md5($_POST['username']);	
-				$foto_name = str_replace(' ', '_', $_POST['full_name']).'-'.$_POST['level'].'.jpeg';
+				$foto_name = str_replace(' ', '_', $_POST['username']).'-'.$_POST['level'].'.jpeg';
 				$param = array(
-					'user_name'=>$_POST['full_name'],
-					'user_username'=>$_POST['username'],
-					'user_email'=>$_POST['email'],
-					'user_level_id'=>$_POST['level'],
-					'user_desc'=>$_POST['deskripsi'],
-					'user_password'=>$password
+					'nama_user'=>$_POST['username'],
+					'level'=>$_POST['level'],
+					'password'=>$password,
+					'photo'=>$foto_name
 				);
+				// var_dump($param);die;
 				$result = $this->user_model->insertUser($param);
 				// var_dump($_FILES);die;
 				if($result && $_FILES['photo']['error'] != 4 && $_FILES['photo']['type'] == 'image/jpeg'){				
@@ -125,12 +134,10 @@ class User extends CI_Controller {
 					if($_POST['user_password_conf'] == $_POST['user_password']){
 						$new_password = md5($_POST['user_password']);
 						$param = array(
-							'user_name'=>$_POST['user_name'],
-							'user_username'=>$_POST['user_username'],
-							'user_level_id'=>$_POST['level'],
-							'user_desc'=>$_POST['deskripsi'],
-							'user_password'=>$new_password,
-							'user_photo_name'=>$foto_name
+							'nama_user'=>$_POST['user_username'],
+							'level'=>$_POST['level'],
+							'password'=>$new_password,
+							'photo'=>$foto_name
 						);
 					}else{
 						$msg = '
@@ -202,7 +209,7 @@ class User extends CI_Controller {
 	public function doDelete($id){
 		if($this->session->userdata('level') == 1  ){
 			$user = $this->user_model->getDetailUser($id);
-			unlink('assets/user_img/'. $user->user_photo_name);
+			unlink('assets/user_img/'. $user->photo);
 			$result = $this->user_model->deleteInv($id);
 			if($result == true){
 				redirect(site_url('user/index?msg=Dm1'));
@@ -217,7 +224,7 @@ class User extends CI_Controller {
 	
 	public function profile($id){
 		if(!empty($this->session->userdata('level'))){
-			$data['level'] = $this->user_model->getUserLevel();	
+			// $data['level'] = $this->user_model->getUserLevel();	
 			$data['detail'] = $this->user_model->getDetailUser($id);
 			// var_dump($data);die;
 			$this->load->view('admin/user/profile', $data);
