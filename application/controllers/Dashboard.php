@@ -29,6 +29,7 @@ class Dashboard extends CI_Controller {
 	public function iseng(){
 		$data = $this->dasboard_model->getSellingStatistic();		
 		$kmeans = $this->kmeans->hitung($data);
+		var_dump($kmeans);
 	}
 	
 	

@@ -141,37 +141,36 @@ class kmeans{
 			while(1==1){
 				$idx_last = count($keanggotaan_tiap_cluster) - 1;
 				$idx_before = count($keanggotaan_tiap_cluster) - 2;
-				if(empty() || ){
-					
-				}
-				$x = array_diff_key($keanggotaan_tiap_cluster[$idx_last]['rendah'], $keanggotaan_tiap_cluster[$idx_before]['rendah']);
-				$y = array_diff_key($keanggotaan_tiap_cluster[$idx_last]['sedang'], $keanggotaan_tiap_cluster[$idx_before]['sedang']);
-				$z = array_diff_key($keanggotaan_tiap_cluster[$idx_last]['tinggi'], $keanggotaan_tiap_cluster[$idx_before]['tinggi']);
-				
-				if(empty($x) && empty($y) && empty($z)){
-					echo 'done';
+				//cek apakah tiap cluster ada anggotanya, jika ada yang kosong maka berhenti (selesai).
+				if(empty($keanggotaan_tiap_cluster[$idx_last]['rendah']) || empty($keanggotaan_tiap_cluster[$idx_last]['rendah']) || empty($keanggotaan_tiap_cluster[$idx_last]['rendah'])){
 					break;
 				}else{
-					$idx_jarak_last = count($jarak_tiap_loop) - 1;
-					$centroid_baru = $this->centroidBaru($keanggotaan_tiap_cluster[$idx_last], $jarak_tiap_loop[$idx_jarak_last]);
-					foreach($data_value as $idx => $val){
-						$jarak[$idx] = $this->hitungJarakKeCentroid($val, $centroid_baru['rendah'], $centroid_baru['sedang'], $centroid_baru['tinggi']);					
+					//cek apakah anggota tiap cluster sudah sama, jika sudah sama maka selsai.
+					$x = array_diff_key($keanggotaan_tiap_cluster[$idx_last]['rendah'], $keanggotaan_tiap_cluster[$idx_before]['rendah']);
+					$y = array_diff_key($keanggotaan_tiap_cluster[$idx_last]['sedang'], $keanggotaan_tiap_cluster[$idx_before]['sedang']);
+					$z = array_diff_key($keanggotaan_tiap_cluster[$idx_last]['tinggi'], $keanggotaan_tiap_cluster[$idx_before]['tinggi']);
+				
+					if(empty($x) && empty($y) && empty($z)){
+						break;
+					}else{
+						$idx_jarak_last = count($jarak_tiap_loop) - 1;
+						$centroid_baru = $this->centroidBaru($keanggotaan_tiap_cluster[$idx_last], $jarak_tiap_loop[$idx_jarak_last]);
+						foreach($data_value as $idx => $val){
+							$jarak[$idx] = $this->hitungJarakKeCentroid($val, $centroid_baru['rendah'], $centroid_baru['sedang'], $centroid_baru['tinggi']);					
+						}
+						array_push($jarak_tiap_loop, $jarak);
+						$keanggotaan = $this->distribusiKeanggotan($jarak);		
+						array_push($keanggotaan_tiap_cluster, $keanggotaan);
 					}
-					array_push($jarak_tiap_loop, $jarak);
-					$keanggotaan = $this->distribusiKeanggotan($jarak);		
-					array_push($keanggotaan_tiap_cluster, $keanggotaan);
 				}
 			}
 			
-			var_dump($keanggotaan_tiap_cluster);
-			//die;
-			
+			//var_dump($keanggotaan_tiap_cluster);
+			$idx_last = count($keanggotaan_tiap_cluster) - 1;
+			return $keanggotaan_tiap_cluster[$idx_last];
 		}else{
 			var_dump('data kosong');
-		}
-		
-		
-		
+		}	
 	}
 	
 	private function centroidBaru($anggota){
