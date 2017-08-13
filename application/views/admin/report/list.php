@@ -128,7 +128,7 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 							echo'
 								<tr>
 									<td>'. $no .'</td>
-									<td>'. $val->kode_invoice .'</td>
+									<td><button  type="button" class="invoice_detail btn btn-sm btn-info">'.$val->kode_invoice.'</button></td>
 									<td>'. $val->nama_cust .'</td>
 									<td>'. $val->alamat_cust .'</td>
 									<td>'. $val->tgl_trans .'</td>
@@ -151,11 +151,87 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
         </div><!-- /.box-footer-->
     </div><!-- /.box -->
 	
+	<div id="box_detail" class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Detail Penjualan</h3>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool hide" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+        <div class="box-body">
+			<div class="row">
+				
+					<div class="col-md-6">
+						<table class="table">
+							<tr>
+								<td>No. Nota</td>
+								<td>:</td>
+								<td id="no_nota"></td>
+							</tr>
+							<tr>
+								<td>Tanggal Order</td>
+								<td>:</td>
+								<td id="ord_date_order"></td>
+							</tr>						
+						</table>
+					</div>	
+					<div class="col-md-6 pull-right">
+						<table class="table">
+							<tr>
+								<td>Nama</td>
+								<td>:</td>
+								<td id="ord_name"></td>
+							</tr>
+							<tr>
+								<td>Alamat</td>
+								<td>:</td>
+								<td id="ord_address"></td>
+							</tr>			
+							<tr>
+								<td>No. Kontak</td>
+								<td>:</td>
+								<td id="ord_contact"></td>
+							</tr>
+						</table>
+					</div>
+					<div class="col-sm-12">
+						<table id="tbl-produk-order" class="table table-bordered table-hover">
+							<thead>
+							<tr>
+								<th>NO</th>
+								<th>Produk</th>
+								<th>Harga</th>
+								<th>Jumlah</th>
+								<th>Sub-Total</th>
+							</tr>
+							</thead>
+							<tfoot>
+								<tr>
+									<td colspan="4">Ongkir</td>
+									<td class="auto" id="ongkir"></td>
+								</tr>
+								<tr>
+									<td colspan="4">Diskon</td>
+									<td class="auto" id="diskon"></td>
+								</tr>
+								<tr>
+									<td colspan="4">TOTAL</td>
+									<td class="auto" id="total"></td>
+								</tr>
+							</tfoot>
+						</table>								
+						<input type="hidden" id="order_id">
+					</div>
+					<div class="col-md-4 pull-left">
+						<button id="proc-print" type="submit" class="btn btn-warning">Cetak</button>
+					</div>
+						
+			</div><!-- /.box-body -->
         <div class="box-footer">
           </div>
         </div><!-- /.box-footer-->
     </div><!-- /.box -->
-	
 
 
 </section><!-- /.content -->
@@ -189,6 +265,52 @@ $this->load->view('template/js');
     });
 	
 	$('.auto').autoNumeric('init');
+	
+	
+	$('.invoice_detail').click(function(){
+		$('#box_detail').removeClass('hide');
+		
+		var invoice_number = $(this).text();
+		console.log(invoice_number);
+		$.ajax({
+			data:{'invo_number':invoice_number},
+			method:'post',
+			url:'<?php echo site_url('cashier/get_detail_invoice')?>'
+		}).success(function(result){			
+			
+			result = JSON.parse(result);
+			console.log(result);
+			
+			var no_nota = $('#no_nota').text(result['penjualan']['kode_invoice']);
+			var tgl_order = $('#ord_date_order').text(result['penjualan']['tgl_trans']);
+			var nama = $('#ord_name').text(result['penjualan']['nama_cust']);
+			var alamat = $('#ord_address').text(result['penjualan']['alamat_cust']);
+			var kontak = $('#ord_contact').text(result['penjualan']['nohp_cust']);			
+			var total = $('#total').text(result['penjualan']['ttl_byr']);
+			var total = $('#ongkir').text(result['penjualan']['biaya_kirim']);
+			var total = $('#diskon').text(result['penjualan']['diskon']);
+			
+			$( "tbody#order_detail_tbody" ).empty();
+			$table = $( "<tbody id=order_detail_tbody></tbody>" );
+			
+			for(i=0; i < result['detail'].length; i++){
+				//var sub_total = result['detail'][i]['orderdetail_quantity'] * result['detail'][i]['inv_price'];
+				var $line = $( "<tr></tr>" );
+				$line.append( $( "<td></td>" ).html(i + 1) );
+				$line.append( $( "<td></td>" ).html(result['detail'][i]['nama_prod']) );
+				$line.append( $( "<td class='auto'></td>" ).html(result['detail'][i]['harga']));
+				$line.append( $( "<td></td>" ).html(result['detail'][i]['jml_jual']));
+				$line.append( $( "<td></td>" ).html(result['detail'][i]['total']));
+				$table.append($line);
+				//console.log($line);
+			}
+			$table.appendTo($("#tbl-produk-order"));
+			
+			$('#box_header_detail').removeClass('hide');
+			$('#box_content_detail').removeClass('hide');
+		});
+	});
+	
   });
 </script>
 <?php

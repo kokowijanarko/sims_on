@@ -5,17 +5,19 @@ if(!defined('BASEPATH')) exit('No direct script access allowed');
 class Cashier_model extends CI_Model
 {
 	
-    // public function __construct()
-    // {
-        // parent::__construct();
-        // $this->load->database();
-        // $this->load->library('session');
-    // }
+	public function getCustomer(){
+		$query = $this->db->query("
+			SELECT * FROM customer ORDER BY nama_cust		
+		");
+		$result = $query->result();
+		return $result;
+	}
+	
 	public function updateStock($stock, $id){
 		$param = array(
-			'inv_stock'=>$stock
+			'stok'=>$stock
 		);
-		$query = $this->db->update('inv_inventory', $param, array('inv_id'=>$id));	
+		$query = $this->db->update('produk', $param, array('id_prod'=>$id));	
 		return $query;
 	}
 	public function getInventory(){		
@@ -88,24 +90,26 @@ class Cashier_model extends CI_Model
 	}
 	
 	public function insertOrder($param){
-		$query = $this->db->insert('cash_order', $param);
+		// var_dump($param);
+		$query = $this->db->insert('penjualan', $param);
+		// var_dump($this->db->last_query());die;
 		return $query;
 	}
 	
 	public function insertOrderDetail($param){
-		$query = $this->db->insert_batch('cash_order_detail', $param);		
+		$query = $this->db->insert_batch('detail_penjualan', $param);		
 		return $query;
 	}
 	
 	public function getInvDetailByInvNumber($inv_number){
 		$query = $this->db->query("
-			SELECT * FROM cash_order WHERE order_id='$inv_number'
+			SELECT * FROM penjualan WHERE order_id='$inv_number'
 		");
 		return $query->row();
 	}
 	public function getOrderByCode($inv_number){
 		$query = $this->db->query("
-			SELECT * FROM cash_order WHERE order_code='$inv_number'
+			SELECT * FROM penjualan WHERE order_code='$inv_number'
 		");
 		return $query->row();
 	}
@@ -119,7 +123,7 @@ class Cashier_model extends CI_Model
 				c.`type_name`,
 				d.`category_name`
 				
-			FROM cash_order_detail a 
+			FROM penjualan_detail a 
 			JOIN inv_inventory b ON a.`orderdetail_product_id` = b.`inv_id`
 			JOIN inv_ref_inventory_type c ON c.`type_id` = b.`inv_type_id`
 			JOIN inv_ref_inventory_category d ON d.`category_id` = b.`inv_category_id`
@@ -161,7 +165,7 @@ class Cashier_model extends CI_Model
 			a.`update_user_id`,
 			IFNULL(c.`user_full_name`,  '-') AS `update_user`,
 			IFNULL(c.`user_full_name`,  '-') AS `update_username`
-		FROM cash_order a
+		FROM penjualan a
 		LEFT JOIN `user` b ON b.`user_id` = a.`insert_user_id`
 		LEFT JOIN `user` c ON c.`user_id` = a.`update_user_id`
 		");
@@ -170,48 +174,59 @@ class Cashier_model extends CI_Model
 	}
 	
 	public function getDetailInvoiceByInvoiceCode($code){
-		$query1 = $this->db->query('SELECT * FROM cash_order WHERE order_code="'.$code.'"');
+		$query1 = $this->db->query('
+			SELECT 
+				a.`id_penj`,
+				a.`kode_invoice`,
+				a.`id_user`,
+				a.`id_cust`,
+				b.`nama_cust`,
+				b.`alamat_cust`,
+				b.`nohp_cust`,
+				a.`tgl_trans`,
+				a.`biaya_kirim`,
+				a.`diskon`,
+				a.`ttl_byr`
+			FROM penjualan a
+			LEFT JOIN customer b ON b.`id_cust` = a.`id_cust`
+			WHERE kode_invoice="'.$code.'"
+		');
 		$result1 = $query1->row();
 		$query2 = $this->db->query('
-					SELECT
-						a.`orderdetail_id`,
-						a.`orderdetail_order_id`,
-						a.`orderdetail_product_id`,
-						b.`inv_name`,
-						c.`category_id`,
-						c.`category_name`,
-						d.`type_id`,
-						d.`type_name`,
-						b.`inv_price`,
-						a.`orderdetail_quantity`
+			SELECT
+				a.`id_penj`,
+				a.`id_prod`,
+				a.`jml_jual`,
+				a.`total`,
+				b.`jenis_prod`,
+				b.`nama_prod`,
+				b.`harga`
 
-					FROM cash_order_detail a
-					LEFT JOIN inv_inventory b ON b.`inv_id` = a.`orderdetail_product_id`
-					LEFT JOIN inv_ref_inventory_category c ON c.`category_id` = b.`inv_category_id`
-					LEFT JOIN inv_ref_inventory_type d ON d.`type_id` = b.`inv_type_id`
+			FROM detail_penjualan a
+			LEFT JOIN produk b ON b.`id_prod`= a.`id_prod`
 					
-					WHERE a.`orderdetail_order_id`="'.$result1->order_id.'"		
-					');		
+			WHERE a.`id_penj`="'.$result1->id_penj.'"		
+		');		
 		$result2 = $query2->result();
 		
 		$result = new stdClass();
-		$result->order = $result1;
+		$result->penjualan = $result1;
 		$result->detail = $result2;
 		return $result;
 	}
 	public function getOrderById($id){
-		$query = $this->db->query('SELECT * FROM cash_order WHERE order_id="'.$id.'"');
+		$query = $this->db->query('SELECT * FROM penjualan WHERE order_id="'.$id.'"');
 		
 		$result = $query->row();
 		return $result;
 	}
 	
 	public function doUpdateOrder($param, $id){
-		$query = $this->db->update('cash_order', $param, array('order_code'=>$id));	
+		$query = $this->db->update('penjualan', $param, array('order_code'=>$id));	
 		return $query;
 	}
 	public function doUpdateOrderStat($param, $id){
-		$query = $this->db->update('cash_order', $param, array('order_id'=>$id));	
+		$query = $this->db->update('penjualan', $param, array('order_id'=>$id));	
 		return $query;
 	}
 

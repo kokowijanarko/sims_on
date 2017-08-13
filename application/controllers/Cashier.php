@@ -20,8 +20,11 @@ class Cashier extends CI_Controller {
 			if(isset($_GET['msg'])){
 				$data['message'] = $this->getMessage($_GET['msg']);
 			}
+			
 			$data['order_code'] = $this->orderCodeGenerator();
 			$data['produk'] = $this->cashier_model->getInventory();
+			$data['customer'] = $this->cashier_model->getCustomer();
+			
 			$this->load->view('admin/cashier/add', $data);
 		}else{
 			redirect(site_url(''));
@@ -57,25 +60,18 @@ class Cashier extends CI_Controller {
 	
 	public function add_order(){
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
-			$post = $_POST;		
-			// var_dump($post);die;
+			$post = $_POST;	
+			//var_dump($post);
 			$param_order = array(
-				'order_code' => $post['no_nota'],
-				'order_custommer_name' => $post['nama'],
-				'order_address'=> $post['alamat'],
-				'order_contact'=> $post['kontak'],
-				'order_email'=> $post['email'],
-				'order_date_order'=> date('Y-m-d', strtotime($post['tgl_order'])),
-				'order_date_design'=> date('Y-m-d', strtotime($post['tgl_lihat_design'])),
-				'order_date_take'=> date('Y-m-m', strtotime($post['tgl_pengambilan'])),
-				'order_amount'=> $post['total'],
-				'order_down_payment'=> $post['dp'],
-				'order_cash_minus'=> $post['kurang'],
-				'order_payment_way'=> $post['payment_way'],
-				'order_status'=> 1,
-				'insert_user_id'=> $this->session->userdata('user_id'),
-				'insert_timestamp'=>date('Y-m-d H:i:s')		
+				'kode_invoice' => $post['no_nota'],
+				'id_user'=> $this->session->userdata('id_user'),
+				'id_cust' => $post['cust_id'],
+				'tgl_trans' => date('Y-m-d', strtotime($post['tgl_order'])),
+				'biaya_kirim' => $post['ongkir'],
+				'diskon' => $post['discount'],					
+				'ttl_byr' => $post['total'],				
 			);
+			//var_dump($param_order);die;
 			$this->db->trans_start();
 			$execute = $this->cashier_model->insertOrder($param_order);
 			
@@ -83,17 +79,17 @@ class Cashier extends CI_Controller {
 				$id_order = $this->db->insert_id();
 				for($i=0; $i<count($post['data_order']['product_id']); $i++){
 					$inv = $this->cashier_model->getInvDetailById($post['data_order']['product_id'][$i]);
-					$new_stock = intval($inv->inv_stock) - intval($post['data_order']['quantity'][$i]);
+					$new_stock = intval($inv->stok) - intval($post['data_order']['quantity'][$i]);
 					$this->cashier_model->updateStock($new_stock, $post['data_order']['product_id'][$i]);
 					$param_detail[] = array(
-						'orderdetail_order_id'=>$id_order,
-						'orderdetail_product_id'=>$post['data_order']['product_id'][$i],
-						'orderdetail_quantity'=>$post['data_order']['quantity'][$i],
-						'orderdetail_desc'=>$post['data_order']['desc'][$i]
+						'id_penj'=>$id_order,
+						'id_prod'=>$post['data_order']['product_id'][$i],
+						'jml_jual'=>$post['data_order']['quantity'][$i],
+						'total'=>$post['data_order']['sub_total'][$i]
 					);
 					
 				}
-				$execute = $execute && $this->cashier_model->insertOrderDetail($param_detail);			
+				$execute = $execute && $this->cashier_model->insertOrderDetail($param_detail);
 			}			
 			$this->db->trans_complete($execute);
 			
@@ -185,7 +181,7 @@ class Cashier extends CI_Controller {
 	public function inv_print($id){
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
 			$data['inv'] = $this->cashier_model->getInvDetailByInvNumber($id);		
-			$data['inv_detail'] = $this->cashier_model->getInvDetail($data['inv']->order_id);
+			$data['inv_detail'] = $this->cashier_model->getInvDetailById($data['inv']->id_penj);
 			// var_dump($data);die;
 			$this->load->view('admin/cashier/print', $data);
 		}else{

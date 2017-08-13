@@ -28,6 +28,7 @@ class Report_model extends CI_Model
 			WHERE 
 				1=1
 				---search---
+			ORDER BY a.`id_penj` DESC
 		';
 		
 		$str='';
