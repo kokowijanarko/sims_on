@@ -8,10 +8,11 @@ class Dasboard_model extends CI_Model
     public function getTop5(){
 		$query = $this->db->query("
 		SELECT
-			a.`product_name`,
-			(SELECT COUNT(aa.`ordprod_product_id`) FROM ord_order_products aa WHERE aa.`ordprod_product_id` = a.`product_id`) AS jumlah
-		FROM prod_products a
-		ORDER BY jumlah DESC
+	a.`id_prod`,
+	a.`nama_prod`,
+	(SELECT COUNT(id_prod) FROM detail_penjualan WHERE id_prod = a.`id_prod`) AS jumlah_penjualan
+FROM produk a
+ORDER BY jumlah_penjualan DESC
 		LIMIT 0, 5
 		");
 		$result = $query->result();
@@ -21,11 +22,11 @@ class Dasboard_model extends CI_Model
 	public function getSellingStatistic(){
 		$query = $this->db->query("
 		SELECT
-			a.`product_id`,
-			a.`product_name`,
-			(SELECT COUNT(aa.`ordprod_product_id`) FROM ord_order_products aa WHERE aa.`ordprod_product_id` = a.`product_id`) AS jumlah
-		FROM prod_products a
-		ORDER BY jumlah DESC
+	a.`id_prod` as product_id,
+	a.`nama_prod` as product_name,
+	(SELECT COUNT(id_prod) FROM detail_penjualan WHERE id_prod = a.`id_prod`) AS jumlah
+FROM produk a
+ORDER BY jumlah DESC
 		");
 		$result = $query->result();
 		return $result;
