@@ -21,7 +21,7 @@ class Authex{
      }
      else
      {
-          $query = $CI->db->get_where("dev_custommer", array("custommer_id" => $CI->session->userdata("user_id")));
+          $query = $CI->db->get_where("user", array("id_user" => $CI->session->userdata("id_user")));
           return $query->row();
      }
  }
@@ -29,7 +29,9 @@ class Authex{
  function logged_in()
  {
      $CI =& get_instance();
-     return ($CI->session->userdata('user_id')) ? true : false;
+	 // var_dump(($CI->session->userdata('id_user')) ? true : false);die;
+	 
+     return ($CI->session->userdata('id_user')) ? true : false;
  }
 
  function login($username, $password)
@@ -37,11 +39,11 @@ class Authex{
      $CI =& get_instance();
 
      $data = array(
-         "user_username" => $username,
-         "user_password" => md5($password)
+         "nama_user" => $username,
+         "password" => md5($password)
      );
 	
-     $query = $CI->db->get_where("dev_user", $data);
+     $query = $CI->db->get_where("user", $data);
 	//var_dump( $data);
      if($query->num_rows() !== 1)
      {
@@ -62,14 +64,11 @@ class Authex{
          // $CI->db->query("UPDATE user SET user_last_login='".$last_login."' WHERE 
 			// user_username = '".$username."' AND user_password = '".md5($password)."'
 		 // ");
-         $CI->session->set_userdata("user_id", $query->row()->user_id);
-         $CI->session->set_userdata("username", $query->row()->user_username);
-         $CI->session->set_userdata("fullname", $query->row()->user_full_name);		 
-         $CI->session->set_userdata("photo", $query->row()->user_photo_name);
-		 
-		 $query_level = $CI->db->get_where("dev_level", array('level_id'=>$query->row()->user_level_id));
-         $CI->session->set_userdata("level", $query->row()->user_level_id);
-         $CI->session->set_userdata("level_name", $query_level->row()->level_name);
+         $CI->session->set_userdata("id_user", $query->row()->id_user);
+         $CI->session->set_userdata("nama_user", $query->row()->nama_user);
+         $CI->session->set_userdata("fullname", $query->row()->nama_user);		 
+         $CI->session->set_userdata("photo", $query->row()->photo);
+         $CI->session->set_userdata("level", $query->row()->level);
          return true;
      }
  }
@@ -92,7 +91,7 @@ class Authex{
              "password" => sha1($password)
          );
 
-         $CI->db->insert("dev_custommer", $data);
+         $CI->db->insert("user", $data);
 
          return true;
      }
@@ -104,7 +103,7 @@ class Authex{
  {
      $CI =& get_instance();
 
-     $query = $CI->db->get_where("dev_custommer", array("username" => $username));
+     $query = $CI->db->get_where("user", array("username" => $username));
 
      return ($query->num_rows() < 1) ? true : false;
  }
