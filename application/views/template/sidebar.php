@@ -50,7 +50,7 @@
                 </a>
 				<ul id="child_menu_cashier" class="treeview-menu">
                     <li id="child_menu_cashier_buat_order"><a href="<?php echo site_url('cashier')?>"><i class="fa fa-circle-o"></i>Buat Order</a></li>
-                    <li id="child_menu_cashier_daftar_order"><a href="<?php echo site_url('cashier/list_invoice') ?>"><i class="fa fa-circle-o"></i>Daftar Order</a></li>
+                    <li id="child_menu_cashier_daftar_customer"><a href="<?php echo site_url('customer') ?>"><i class="fa fa-circle-o"></i>Daftar Customer</a></li>
                 </ul>
             </li>
 			<li id="menu_report" class="treeview">

@@ -106,6 +106,21 @@ class Dasboard_model extends CI_Model
 		return $result;
 	}
 	
+	public function getProductDetail($id){
+		$query = $this->db->query("
+			SELECT
+				a.`id_prod` as product_id,
+				a.`nama_prod` as product_name,
+				(SELECT COUNT(id_prod) FROM detail_penjualan WHERE id_prod = a.`id_prod`) AS jumlah
+			FROM produk a
+			WHERE 
+				a.`id_prod` IN ($id)
+			ORDER BY jumlah DESC
+			LIMIT 0, 5
+		");
+		return $query->result();
+	}
+	
 	
 	
 }
