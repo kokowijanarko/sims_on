@@ -12,7 +12,7 @@ $this->load->view('template/sidebar');
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Customer
+        Pembelian
         <small>Data</small>
     </h1>
     
@@ -24,7 +24,7 @@ $this->load->view('template/sidebar');
     <!-- Default box -->
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">Daftar Customer</h3>
+            <h3 class="box-title">Daftar Pembelian</h3>
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
@@ -34,18 +34,13 @@ $this->load->view('template/sidebar');
 			<div class="col-md-12">
 				<?php echo isset($message)?$message:NULL?>
 			</div>
-			<div style="float:right" class="col-md-2">
-				<a href="<?php echo base_url('index.php/customer/add')?>" ><button type="button" class="btn btn-block btn-success btn-sm">Tambah customer</button></a>
-			</div>
-			</br>
-			</br>
+			
 			<table id="tbl-inventory" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>No</th>
-                  <th>Nama customer</th>
-                  <th>Alamat</th>
-                  <th>No HP</th>
+                  <th>Tanggal</th>
+                  <th>Supplier</th>
                   <th>Aksi</th>
                 </tr>
                 </thead>
@@ -55,29 +50,59 @@ $this->load->view('template/sidebar');
 						foreach($list as $value){
 							echo '<tr>';
 							echo '<td>'.$no.'</td>';
-							echo '<td>'.$value->nama_cust.'</td>';
-							echo '<td>'.$value->alamat_cust.'</td>';
-							echo '<td>'.$value->nohp_cust.'</td>';
-							echo '<td>
-								<div class="btn-group">
-									<button type="button" class="btn btn-info btn-flat">Aksi</button>
-									<button type="button" class="btn btn-info btn-flat dropdown-toggle" data-toggle="dropdown">
-										<span class="caret"></span>
-										<span class="sr-only">Toggle Dropdown</span>
-									</button>
-									<ul class="dropdown-menu" role="menu">
-										<li><a href="'.site_url('customer/edit/'.$value->id_cust).'">Edit</a></li>
-										<li><a href="'.site_url('customer/doDelete/'.$value->id_cust).'">Hapus</a></li>
-									</ul>
-								</div>
-							
-							</td>';
+							echo '<td>'.date('d-m-Y', strtotime($value->tgl_beli)) .'</td>';
+							echo '<td>'.$value->nama_sup.'</td>';
+							echo '<td><button class="btn btn-success detail" id="'. $value->id_beli .'">Detail</button></td>';
 							echo '</tr>';
 							$no++;
 						}
 					?>
                 </tbody>
               </table>
+            
+        </div><!-- /.box-body -->
+        <div class="box-footer">
+           
+        </div><!-- /.box-footer-->
+    </div><!-- /.box -->
+
+	<div id = "box_detail" class="box hide" >
+        <div class="box-header with-border">
+            <h3 class="box-title">Detail Pembelian</h3>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+        <div class="box-body">
+			<div class="col-md-4">
+				<table class="table table-hover hide">
+					<tr>
+						<td>Supplier</td>
+						<td>:</td>
+						<td id="sup"></td>
+					</tr>
+					<tr>
+						<td>Tgl Beli</td>
+						<td>:</td>
+						<td id="tgl_beli"></td>
+					</tr>
+				</table>
+			</div>
+			<table id="tbl_detail_pembelian" class="table table-bordered table-hover">
+               <thead>
+					<tr>
+					  <th>No</th>
+					  <th>Produk</th>
+					  <th>jumlah</th>
+					  <th>Harga</th>
+					  <th>Total</th>
+					</tr>
+                </thead>
+				<tbody>
+					
+				</tbody>
+            </table>
             
         </div><!-- /.box-body -->
         <div class="box-footer">
@@ -100,7 +125,7 @@ $this->load->view('template/js');
 
 <script>
   jQuery(function($) {
-    $('#tbl-inventory').DataTable({
+	$('#tbl-inventory').DataTable({
       "paging": true,
       "lengthChange": false,
       "searching": false,
@@ -110,6 +135,39 @@ $this->load->view('template/js');
     });
 	
 	$('.auto').autoNumeric('init');
+	
+	$('.detail').click(function(){
+		$('#box_detail').removeClass('hide');
+		var id = $(this).attr('id');
+		$.ajax({
+			data:{'id':id},
+			method:'post',
+			url:'<?php echo site_url('pembelian/get_detail_pembelian/')?>/' + id
+		}).success(function(result){
+			result = JSON.parse(result);
+			console.log(result);
+			
+			$( "tbody#detail_tbody" ).empty();
+			$table = $( "<tbody id=detail_tbody></tbody>" );
+			
+			for(i=0; i < result.length; i++){
+				var sub_total = result[i]['jml_brg'] * result[i]['harga_beli'];
+				var $line = $( "<tr></tr>" );
+				$line.append( $( "<td></td>" ).html(i + 1) );
+				$line.append( $( "<td></td>" ).html(result[i]['nama_prod']) );
+				$line.append( $( "<td class='auto'></td>" ).html(result[i]['jml_brg']));
+				$line.append( $( "<td></td>" ).html(result[i]['harga_beli']));
+				$line.append( $( "<td class='auto'></td>" ).html(sub_total));
+				$table.append($line);
+				//console.log($line);
+			}
+			$table.appendTo($("#tbl_detail_pembelian"));
+		})
+		
+	})
+	
+	
+	
   });
 </script>
 <?php

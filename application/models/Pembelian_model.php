@@ -2,35 +2,60 @@
 
 if(!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Customer_model extends CI_Model
+class Pembelian_model extends CI_Model
 {
-	public function getCustomer(){
+	public function getPembelian(){
 		$query = $this->db->query("
-			SELECT * FROM customer ORDER BY nama_cust ASC 
+			SELECT
+				a.`id_beli`,
+				a.`tgl_beli`,
+				b.`id_sup`,
+				b.`nama_sup`,
+				a.`id_user`
+			FROM pembelian a
+			LEFT JOIN supplier b ON b.`id_sup`=a.`id_sup`
+			LEFT JOIN `user` c ON c.`id_user` = a.`id_user`
 		");
 		$result = $query->result();
 		return $result;
 	}
 	
-	public function getDetailCustomer($id){
+	public function getDetailPembelian($id){
 		$query = $this->db->query("
-			SELECT * FROM customer WHERE id_cust= $id
+			SELECT
+				a.`id_beli`,
+				c.`id_sup`,
+				d.`nama_sup`,
+				a.`id_prod`,
+				b.`nama_prod`,
+				a.`harga_jual`,
+				a.`harga_beli`,
+				a.`jml_brg`
+			FROM detail_pembelian a
+			LEFT JOIN produk b ON b.`id_prod`=a.`id_prod`
+			LEFT JOIN pembelian c ON c.`id_beli`=a.`id_beli`
+			LEFT JOIN supplier d ON d.`id_sup`=c.`id_sup`
+			WHERE a.`id_beli` = $id
 		");
-		$result = $query->row();
+		$result = $query->result();
 		return $result;
 	}
 	
-	public function insertCustomer($param){
-		$query = $this->db->insert('customer', $param);
+	public function insertPembelian($param){
+		$query = $this->db->insert('pembelian', $param);
 		return $query;		
 	}
-	public function updateCustomer($param, $id_cust){
-		$query = $this->db->update('customer', $param, array('id_cust'=>$id_cust));		
+	public function insertDetailPembelian($param){
+		$query = $this->db->insert('detail_pembelian', $param);
+		return $query;		
+	}
+	public function updatePembelian($param, $id_cust){
+		$query = $this->db->update('pembelian', $param, array('id_cust'=>$id_cust));		
 		return $query;
 		
 	}
-    public function deleteCustomer($id){
-		$query = $this->db->delete('customer', array('id_cust' => $id));
+    public function deletePembelian($id){
+		$query = $this->db->delete('pembelian', array('id_cust' => $id));
 		return $query;
 	}
 
