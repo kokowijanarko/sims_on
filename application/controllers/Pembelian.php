@@ -6,8 +6,8 @@ class Pembelian extends CI_Controller {
     {
         parent::__construct();
 		$this->load->model('pembelian_model');
+		$this->load->model('cashier_model');
 		$this->load->library('authex');
-		$this->load->library('foto_upload');
 		
 		$login = $this->authex->logged_in();
 		if(!$login){
@@ -32,7 +32,11 @@ class Pembelian extends CI_Controller {
 	
 	public function add(){
 		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
-			$this->load->view('admin/pembelian/add');
+			
+			$data['produk'] = $this->cashier_model->getInventory();
+			$data['supplier'] = $this->pembelian_model->getSupplier();
+			// var_dump($data);die;
+			$this->load->view('admin/pembelian/add', $data);
 		}else{
 			redirect(site_url(''));
 		}		

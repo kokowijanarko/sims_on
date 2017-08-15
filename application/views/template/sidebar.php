@@ -66,6 +66,7 @@
 					<i class="fa fa-files-o"></i> <span>Pembelian</span><i class="fa fa-angle-left pull-right"></i>
                 </a>       
 				<ul id="child_menu_user" class="treeview-menu">
+                    <li id="child_menu_report_daftar_user"><a href="<?php echo site_url('pembelian/add') ?>"><i class="fa fa-circle-o"></i>Form Pembelian</a></li>
                     <li id="child_menu_report_daftar_user"><a href="<?php echo site_url('pembelian') ?>"><i class="fa fa-circle-o"></i>Daftar Pembelian</a></li>
                     <li id="child_menu_report_daftar_user"><a href="<?php echo site_url('supplier') ?>"><i class="fa fa-circle-o"></i>Daftar Supplier</a></li>
                 </ul>

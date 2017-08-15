@@ -53,9 +53,9 @@ class Dashboard extends CI_Controller {
 			if($idx == 'rendah'){
 				$txt .= "<tr><th>RENDAH</th>";
 			}elseif($idx == 'sedang'){
-				$txt .= "<tr><th>SEDANG</th>";
-			}elseif($idx == 'tinggi'){
 				$txt .= "<tr><th>TINGGI</th>";
+			}elseif($idx == 'tinggi'){
+				$txt .= "<tr><th>SEDANG</th>";
 			}			
 			foreach($value as $key=>$val){
 				$txt .= '<td>'. $val->product_name .'</td>';

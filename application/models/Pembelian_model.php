@@ -41,6 +41,11 @@ class Pembelian_model extends CI_Model
 		return $result;
 	}
 	
+	public function getSupplier(){
+		$query = $this->db->get('supplier');
+		return $query->result();
+	}
+	
 	public function insertPembelian($param){
 		$query = $this->db->insert('pembelian', $param);
 		return $query;		
