@@ -94,7 +94,7 @@ $this->load->view('template/sidebar');
 										<div class="input-group-addon">
 										<i class="fa fa-calendar"></i>
 										</div>
-										<input type="text" name="ord_date_order" readonly value="<?php echo date('d-m-Y')?>" class="form-control" id="ord_date_order">
+										<input type="text" name="ord_date_order" value="<?php echo date('d-m-Y')?>" class="form-control" id="ord_date_order">
 									</div>
 								</td>
 							</tr>
@@ -213,53 +213,14 @@ $this->load->view('template/js');
 		var id_order = [];
 		var is_prod_load;
 		
-		$('#discount').change(function(){
-			var total = 0;
-			for (var i = 0; i < sub_total.length; i++) {
-				total += sub_total[i] << 0;
-			}
-			var disc = $('#discount').val();
-			console.log(disc);
-			ongkir = $('#ongkir').val();
-			console.log(ongkir);
-			total_final = total - (total * (disc / 100));
-			total_final = parseInt(total_final) + parseInt(ongkir);
-			$('#total').text(total_final);
-			
-		})
-		
-		$('#ongkir').change(function(){
-			var disc = $('#discount').val();
-			ongkir = $('#ongkir').val();
-			ongkir = parseInt(ongkir);
-			if(disc <= 0){
-				var total = 0;
-				for (var i = 0; i < sub_total.length; i++) {
-					total += sub_total[i] << 0;
-				}
-				total = parseInt(total);
-				disc = parseInt(disc);
-				total = total + (total * (disc / 100));
-				total = total + ongkir;
-			}else{
-				total = $('#total').text();
-				total = parseInt(total);
-				disc = parseInt(disc);
-				total = total + ongkir;
-			}
-			$('#total').text(total);
-		})
-		
-		
-		
-		
 		$('#smt-order').click(function(){
 			var prod_val = $('#produk').val();
 			var prod_name = $('#produk option:selected').text();
 			var prod = prod_val.split('|');			
-			var prod_price = prod[1];
+			//var prod_price = prod[1];
 			var prod_id = prod[0];
 			var prod_price_sell = $('#harga_jual').val();
+			var prod_price = $('#harga').val();
 			var prod_quantity = $('#jumlah').val(); 
 			var prod_sub_total = prod_price * prod_quantity;
 						
@@ -291,6 +252,9 @@ $this->load->view('template/js');
 			}
 			$table.appendTo($("#tbl-produk-order"));
 			is_prod_load = 1;
+			$('#harga_jual').val('');
+			$('#harga').val('');
+			$('#jumlah').val(''); 
 		});
 		
 		$('#proc-order').click(function(){		
@@ -299,7 +263,7 @@ $this->load->view('template/js');
 			if(validation == false){
 				var val = $('#ord_name option:selected').val();
 				var values = val.split('|');
-				var cust_id = values[0];
+				var sup_id = values[0];
 				var tgl_order = $('input[name=ord_date_order]').val();
 				var nama = $('#ord_name').val();
 				var alamat = $('#ord_address').val();
@@ -309,8 +273,7 @@ $this->load->view('template/js');
 				var total = $('#total').text()	
 				
 				var params = {
-						no_nota,
-						cust_id,
+						sup_id,
 						tgl_order,
 						total,
 						data_order
@@ -326,7 +289,7 @@ $this->load->view('template/js');
 						console.log(result);
 						result = JSON.parse(result);
 						id_order.push(result);
-					if(alert('Order Sukses Dibuat')){
+					if(alert('Pembelian Sukses Dibuat')){
 						//
 					}else{
 						window.location.reload(); 
@@ -410,7 +373,7 @@ $this->load->view('template/js');
 			var bayar = $('input[name=cash]' ).val();
 			var kurang = $('input[name=minus]' ).val();
 			var kembali = $('input[name=cash_back]' ).val();
-			var no_nota = $('#no_nota').text();
+			//var no_nota = $('#no_nota').text();
 			var tgl_order = $('input[name=ord_date_order]').val();
 			var nama = $('#ord_name').val();
 			var alamat = $('#ord_address').val();
@@ -420,13 +383,13 @@ $this->load->view('template/js');
 				msg.push('Tidak bisa melakukan proses order tampa DP')
 			}
 			if(!nama){
-				msg.push('Nama Pemesan Tidak Boleh Kosong');
+				msg.push('Nama Supplier Tidak Boleh Kosong');
 			}
 			if(!alamat){
-				msg.push('Alamat Pemesan Tidak Boleh Kosong');
+				msg.push('Alamat Supplier Tidak Boleh Kosong');
 			}
 			if(!kontak){
-				msg.push('Kontak Pemesan Tidak Boleh Kosong');
+				msg.push('Kontak Supplier Tidak Boleh Kosong');
 			}
 			
 			if(is_prod_load != 1){

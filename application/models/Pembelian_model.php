@@ -51,7 +51,7 @@ class Pembelian_model extends CI_Model
 		return $query;		
 	}
 	public function insertDetailPembelian($param){
-		$query = $this->db->insert('detail_pembelian', $param);
+		$query = $this->db->insert_batch('detail_pembelian', $param);
 		return $query;		
 	}
 	public function updatePembelian($param, $id_cust){
