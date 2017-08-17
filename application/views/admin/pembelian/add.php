@@ -150,18 +150,6 @@ $this->load->view('template/sidebar');
 							</thead>
 							<tfoot>
 								<tr>
-									<td colspan="4">Ongkir</td>
-									<td><input type="number" value="0" min=0 id="ongkir" name="ongkir"></td>
-									
-									<td id="disc"></td>
-								</tr>
-								<tr>
-									<td colspan="4">Discount</td>
-									<td><input type="number" value="0" min=0 max=100 id="discount" name="discount"></td>
-									
-									<td id="disc"></td>
-								</tr>
-								<tr>
 									<td colspan="4">TOTAL</td>
 									<td id="total"></td>
 								</tr>								
@@ -217,10 +205,11 @@ $this->load->view('template/js');
 		var product_name = [];
 		var product_id = [];
 		var price = [];
+		var price_sell = [];
 		var quantity = [];
 		var sub_total = [];
 		var desc = [];
-		var data_order = {product_name, product_id, price, quantity, sub_total, desc};
+		var data_order = {product_name, product_id, price, price_sell, quantity, sub_total, desc};
 		var id_order = [];
 		var is_prod_load;
 		
@@ -270,6 +259,7 @@ $this->load->view('template/js');
 			var prod = prod_val.split('|');			
 			var prod_price = prod[1];
 			var prod_id = prod[0];
+			var prod_price_sell = $('#harga_jual').val();
 			var prod_quantity = $('#jumlah').val(); 
 			var prod_sub_total = prod_price * prod_quantity;
 						
@@ -277,6 +267,7 @@ $this->load->view('template/js');
 				product_id.push(prod_id);
 				product_name.push(prod_name);
 				price.push(prod_price);
+				price_sell.push(prod_price_sell);
 				quantity.push(prod_quantity);
 				sub_total.push(prod_sub_total);
 			}			
@@ -309,7 +300,6 @@ $this->load->view('template/js');
 				var val = $('#ord_name option:selected').val();
 				var values = val.split('|');
 				var cust_id = values[0];
-				var no_nota = $('#no_nota').text();
 				var tgl_order = $('input[name=ord_date_order]').val();
 				var nama = $('#ord_name').val();
 				var alamat = $('#ord_address').val();
@@ -322,14 +312,12 @@ $this->load->view('template/js');
 						no_nota,
 						cust_id,
 						tgl_order,
-						discount,
-						ongkir,
 						total,
 						data_order
 					};
 				
 				console.log(params);
-				var url = '<?php echo site_url('cashier/add_order')?>';
+				var url = '<?php echo site_url('pembelian/add_pembelian')?>';
 				$.ajax({
 					url: url,
 					method:'post',

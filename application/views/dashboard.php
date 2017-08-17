@@ -71,7 +71,7 @@ $this->load->view('template/sidebar');
                     </table>
 				</div>
 				<div class="box-footer">
-                    <a href="<?php echo site_url('inventory')?>">Detail....</a>
+                    <a href="<?php echo site_url('report/daily_list')?>">Detail....</a>
 				</div>			
 			</div>
           

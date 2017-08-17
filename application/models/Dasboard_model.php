@@ -19,15 +19,36 @@ class Dasboard_model extends CI_Model
 		return $result;
 	}
 	
-	public function getSellingStatistic(){
-		$query = $this->db->query("
-		SELECT
-			a.`id_prod` as product_id,
-			a.`nama_prod` as product_name,
-			(SELECT COUNT(id_prod) FROM detail_penjualan WHERE id_prod = a.`id_prod`) AS jumlah
-		FROM produk a
-		ORDER BY jumlah DESC
-		");
+	public function getSellingStatistic($filter=array()){
+		$q = "
+			SELECT
+				a.`id_prod` as product_id,
+				a.`nama_prod` as product_name,
+				(SELECT 
+					COUNT(id_prod) 
+				FROM detail_penjualan aa
+				LEFT JOIN penjualan bb ON bb.`id_penj`=aa.`id_penj`
+				WHERE 
+					aa.id_prod = a.`id_prod`
+					---date---
+				) AS jumlah
+			FROM produk a
+			ORDER BY jumlah DESC
+		";
+		$str = '';
+		if(!empty($filter)){
+			if((!empty($filter['date']) && $filter['date'] != 'all')&&(empty($filter['date_end']) || $filter['date_end'] == 'all')){
+				$str .= " AND bb.`tgl_trans` LIKE '%". $filter['date'] ."%'";
+			}elseif((!empty($filter['date']) && $filter['date'] != 'all')&&(!empty($filter['date_end']) && $filter['date_end'] != 'all')){
+				$str .= " AND bb.`tgl_trans` BETWEEN '". $filter['date'] ."' AND '". $filter['date_end'] ."'";
+			}
+			if(!empty($filter['user']) && $filter['user'] !== 'all'){
+				$str .= " AND bb.`id_user` =". $filter['user'];
+			}
+		}
+		
+		$q = str_replace('---date---', $str, $q);		
+		$query = $this->db->query($q);
 		$result = $query->result();
 		return $result;
 	}

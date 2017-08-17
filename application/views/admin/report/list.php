@@ -43,9 +43,21 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 						<td width="100px" ><br><label>Tanggal Transaksi</label><br></td>
 						<td width="200px">
 							<br>
-							<div class="input-group date">
-								
-								<input type="text" name="date" id="datepicker" value="<?php $val = isset($post['date']) ? ($post['date'] == 'all' ? null : date('d-m-Y', strtotime($post['date']))):null; echo $val;?>" class="form-control" id="date">
+							<div class="input-group date">								
+								<input type="text" name="date" id="datepicker" value="<?php $val = isset($post['date']) ? ($post['date'] == 'all' ? null : date('d-m-Y', strtotime($post['date']))):null; echo $val;?>" class="form-control">
+								<div class="input-group-addon">
+									<i class="fa fa-calendar"></i>
+								</div>
+							</div>	
+							<br>
+						</td>
+						<td>
+							s/d
+						</td>
+						<td width="200px">
+							<br>
+							<div class="input-group date">								
+								<input type="text" name="date_end" id="date_end" value="<?php $val = isset($post['date_end']) ? ($post['date_end'] == 'all' ? null : date('d-m-Y', strtotime($post['date_end']))):null; echo $val;?>" class="form-control">
 								<div class="input-group-addon">
 									<i class="fa fa-calendar"></i>
 								</div>
@@ -92,6 +104,21 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 		</div>
 	
 	</div>
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">Review Klasifikasi Penjualan</h3>
+
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>						
+						<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+					</div>
+				</div>
+				<div class="box-body">
+                    <table id = "table_kmeans" class="table">
+						<?php echo $kmeans?>
+                    </table>
+				</div>
+			</div>
 	<div class="box">
 		<div class="box-header with-border">
             <h3 class="box-title">Daftar Penjualan</h3>
@@ -151,7 +178,7 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
         </div><!-- /.box-footer-->
     </div><!-- /.box -->
 	
-	<div id="box_detail" class="box">
+	<div id="box_detail" class="box hide">
         <div class="box-header with-border">
             <h3 class="box-title">Detail Penjualan</h3>
             <div class="box-tools pull-right">
@@ -223,7 +250,7 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 						</table>								
 						<input type="hidden" id="order_id">
 					</div>
-					<div class="col-md-4 pull-left">
+					<div class="col-md-4 pull-left hide">
 						<button id="proc-print" type="submit" class="btn btn-warning">Cetak</button>
 					</div>
 						
@@ -252,6 +279,9 @@ $this->load->view('template/js');
 <script>
   jQuery(function($) {
 	$('#datepicker').datepicker({			
+		autoclose: true
+	});
+	$('#date_end').datepicker({			
 		autoclose: true
 	});
 	
@@ -311,6 +341,13 @@ $this->load->view('template/js');
 		});
 	});
 	
+	// $.ajax({
+			// url:'<?php echo site_url('dashboard/kmeans/')?>'
+		// }).success(function(result){
+			// result = JSON.parse(result);
+			// console.log(result);
+			// $('#table_kmeans').append(result);
+		// });	
   });
 </script>
 <?php

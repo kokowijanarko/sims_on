@@ -41,7 +41,53 @@ class Pembelian extends CI_Controller {
 			redirect(site_url(''));
 		}		
 	}
-	
+	public function add_pembelian(){
+		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+			$post = $_POST;	
+			var_dump($post);
+			$param_order = array(
+				'kode_invoice' => $post['no_nota'],
+				'id_user'=> $this->session->userdata('id_user'),
+				'id_cust' => $post['cust_id'],
+				'tgl_trans' => date('Y-m-d', strtotime($post['tgl_order'])),
+				'biaya_kirim' => $post['ongkir'],
+				'diskon' => $post['discount'],					
+				'ttl_byr' => $post['total'],				
+			);
+			//var_dump($param_order);die;
+			$this->db->trans_start();
+			$execute = $this->cashier_model->insertOrder($param_order);
+			
+			if($execute){
+				$id_order = $this->db->insert_id();
+				for($i=0; $i<count($post['data_order']['product_id']); $i++){
+					$inv = $this->cashier_model->getInvDetailById($post['data_order']['product_id'][$i]);
+					$new_stock = intval($inv->stok) - intval($post['data_order']['quantity'][$i]);
+					$this->cashier_model->updateStock($new_stock, $post['data_order']['product_id'][$i]);
+					$param_detail[] = array(
+						'id_penj'=>$id_order,
+						'id_prod'=>$post['data_order']['product_id'][$i],
+						'jml_jual'=>$post['data_order']['quantity'][$i],
+						'total'=>$post['data_order']['sub_total'][$i]
+					);
+					
+				}
+				$execute = $execute && $this->cashier_model->insertOrderDetail($param_detail);
+			}			
+			$this->db->trans_complete($execute);
+			
+			if($execute){
+				echo json_encode($id_order);
+				exit;
+			}else{
+				echo json_encode(FALSE);
+				exit;
+			}
+		}else{
+			redirect(site_url(''));
+		}	
+		
+	}
 	public function edit($id){
 		if($this->session->userdata('level') == 1  || $this->session->userdata('level') == 2){
 			$data['detail'] = $this->pembelian_model->getDetailPembelian($id);

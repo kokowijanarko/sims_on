@@ -8,8 +8,10 @@ class Report extends CI_Controller {
 		$this->load->model('cashier_model');
 		$this->load->model('report_model');
 		$this->load->model('user_model');
+		$this->load->model('dasboard_model');
 		$this->load->library('authex');
 		$this->load->library('rep_pdf');
+		$this->load->library('kmeans');
 		$login = $this->authex->logged_in();
 		if(!$login){
 			redirect(site_url(''));
@@ -39,12 +41,63 @@ class Report extends CI_Controller {
 				}else{
 					$date = date('Y-m-d', strtotime($_POST['date']));
 				}
+				if($_POST['date_end'] == '1970-01-01' || $_POST['date_end'] == ''){
+					$date_end = 'all';
+				}else{
+					$date_end = date('Y-m-d', strtotime($_POST['date_end']));
+				}
+				
 				$filter = array(
 					'date'=> $date,
+					'date_end'=> $date_end,
 					'user'=>$_POST['user']
 				);
+				
 				$data['post'] = $_POST;
 			}
+			
+			$prod = $this->dasboard_model->getSellingStatistic($filter);
+			// var_dump($this->db->last_query());
+			$data_kmeans = $this->kmeans->hitung($prod);
+			$txt = '';
+			if($data_kmeans['msg'] !== ''){
+				$txt = $data_kmeans['msg'];
+			}else{
+				$kmeans = $data_kmeans['data'];
+				$cluster = array();
+			
+				foreach($kmeans as $idx=>$value){
+					$id_clust = '';
+					foreach($value as $key=>$val){
+						$cluster[$idx][] = $key;
+						$id_clust .= $key .', ';
+					}
+					$id_clust = rtrim($id_clust, ', ');
+					$id[$idx] = $id_clust;
+				}
+				
+				foreach($id as $idx=>$val){
+					$data[$idx] = $this->dasboard_model->getProductDetail($val);	
+				}
+				
+				foreach($data as $idx=>$value){
+					$table_comp = '';
+					$i = 1;		
+					if($idx == 'rendah'){
+						$txt .= "<tr><th>RENDAH</th>";
+					}elseif($idx == 'sedang'){
+						$txt .= "<tr><th>TINGGI</th>";
+					}elseif($idx == 'tinggi'){
+						$txt .= "<tr><th>SEDANG</th>";
+					}			
+					foreach($value as $key=>$val){
+						$txt .= '<td>'. $val->product_name .'</td>';
+						$i++;
+					}
+					$txt .= '</tr>';			
+				}
+			}
+			$data['kmeans'] = $txt;
 			// var_dump($_POST, $filter);die;
 			$data['invoice'] = $this->report_model->getTransactionByDate($filter);
 			// var_dump($this->db->last_query());

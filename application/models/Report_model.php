@@ -32,8 +32,10 @@ class Report_model extends CI_Model
 		';
 		
 		$str='';
-		if(!empty($filter['date']) && $filter['date'] != 'all'){
+		if((!empty($filter['date']) && $filter['date'] != 'all')&&(empty($filter['date_end']) || $filter['date_end'] == 'all')){
 			$str .= " AND a.`tgl_trans` LIKE '%". $filter['date'] ."%'";
+		}elseif((!empty($filter['date']) && $filter['date'] != 'all')&&(!empty($filter['date_end']) && $filter['date_end'] != 'all')){
+			$str .= " AND a.`tgl_trans` BETWEEN '". $filter['date'] ."' AND '". $filter['date_end'] ."'";
 		}
 		if(!empty($filter['user']) && $filter['user'] !== 'all'){
 			$str .= " AND b.`id_user` =". $filter['user'];

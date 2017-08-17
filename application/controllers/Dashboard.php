@@ -28,48 +28,55 @@ class Dashboard extends CI_Controller {
 	
 	public function kmeans(){
 		$prod = $this->dasboard_model->getSellingStatistic();		
-		$kmeans = $this->kmeans->hitung($prod);
+		$data_kmeans = $this->kmeans->hitung($prod);
+		if($data_kmeans['msg'] !== ''){
+			echo json_encode($data_kmeans['msg']);
+			exit;
+		}else{
+			$kmeans = $data_kmeans['data'];
+			$cluster = array();
 		
-		$cluster = array();
-		
-		foreach($kmeans as $idx=>$value){
-			$id_clust = '';
-			foreach($value as $key=>$val){
-				$cluster[$idx][] = $key;
-				$id_clust .= $key .', ';
+			foreach($kmeans as $idx=>$value){
+				$id_clust = '';
+				foreach($value as $key=>$val){
+					$cluster[$idx][] = $key;
+					$id_clust .= $key .', ';
+				}
+				$id_clust = rtrim($id_clust, ', ');
+				$id[$idx] = $id_clust;
 			}
-			$id_clust = rtrim($id_clust, ', ');
-			$id[$idx] = $id_clust;
-		}
-		
-		foreach($id as $idx=>$val){
-			$data[$idx] = $this->dasboard_model->getProductDetail($val);	
-		}
-		
-		$txt = '';
-		foreach($data as $idx=>$value){
-			$table_comp = '';
-			$i = 1;		
-			if($idx == 'rendah'){
-				$txt .= "<tr><th>RENDAH</th>";
-			}elseif($idx == 'sedang'){
-				$txt .= "<tr><th>TINGGI</th>";
-			}elseif($idx == 'tinggi'){
-				$txt .= "<tr><th>SEDANG</th>";
-			}			
-			foreach($value as $key=>$val){
-				$txt .= '<td>'. $val->product_name .'</td>';
-				$i++;
+			
+			foreach($id as $idx=>$val){
+				$data[$idx] = $this->dasboard_model->getProductDetail($val);	
 			}
-			$txt .= '</tr>';			
+			
+			$txt = '';
+			foreach($data as $idx=>$value){
+				$table_comp = '';
+				$i = 1;		
+				if($idx == 'rendah'){
+					$txt .= "<tr><th>RENDAH</th>";
+				}elseif($idx == 'sedang'){
+					$txt .= "<tr><th>TINGGI</th>";
+				}elseif($idx == 'tinggi'){
+					$txt .= "<tr><th>SEDANG</th>";
+				}			
+				foreach($value as $key=>$val){
+					$txt .= '<td>'. $val->product_name .'</td>';
+					$i++;
+				}
+				$txt .= '</tr>';			
+			}
+			
+			
+			// var_dump($txt);die;
+			/* var_dump($id, $data, $this->db->last_query());die ; */
+			
+			echo json_encode($txt);
+			exit;
 		}
 		
 		
-		// var_dump($txt);die;
-		/* var_dump($id, $data, $this->db->last_query());die ; */
-		
-		echo json_encode($txt);
-		exit;
 	}
 	
 	
