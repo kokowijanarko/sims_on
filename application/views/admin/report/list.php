@@ -129,7 +129,7 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
         </div>
 			
         <div class="box-body">
-			<div>
+			<div class="hide">
 				<a href="<?php echo site_url('report/print_report?date='. $date .'&fo='. $fo)?>" target="_blank"><button class="btn btn-sm btn-primary">Cetak Laporan</button></a>
 			</div>
 			<br>
