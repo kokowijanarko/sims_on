@@ -38,7 +38,7 @@ $this->load->view('template/sidebar');
         <div class="box-body">
 			<div class="row">
 				<div class="col-md-6">
-					<form role="form" method="post" action="<?php echo site_url('inventory/doAdd')?>">
+					<form role="form" method="post" action="<?php echo site_url('inventory/doAdd')?>" enctype="multipart/form-data">
 						<div class="form-group">
 							<label>Produk</label>
 							<input type="text" name="produk" id="produk" class="form-control" placeholder="Produk">
@@ -74,6 +74,10 @@ $this->load->view('template/sidebar');
 								<input id="stok"  type="number" name="stok" class="form-control">
 								<span class="input-group-addon">Biji</span>
 							</div>
+						</div>
+						<div class="form-group">
+							<label>Foto</label>
+							<input type="file" name="photo" id="photo">
 						</div>
 						<div class="box-footer">
 							<button type="cancel" class="btn btn-warning">Batal</button>

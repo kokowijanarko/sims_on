@@ -90,6 +90,7 @@ $this->load->view('template/sidebar');
 					  <th width="10%">Kategori</th>
 					  <th>Harga</th>
 					  <th>Stok</th>
+					  <th width="25%">Gambar</th>
 					  <th class="action">Aksi</th>
 					</tr>
                 </thead>
@@ -97,12 +98,19 @@ $this->load->view('template/sidebar');
 					<?php
 						$no=1;
 						foreach($list as $value){
+							$photo = '';
+							if(!empty($value->photo) || $value->photo != NULL){
+								$photo = base_url('assets/user_img/'. $value->photo);
+							}else{
+								$photo = base_url('assets/user_img/default.jpg');
+							}
 							echo '<tr>';
 							echo '<td>'.$no.'</td>';
 							echo '<td>'.$value->nama_prod.'</td>';
 							echo '<td>'.$value->jenis_prod.'</td>';
 							echo '<td>'.number_format($value->harga, '2', ',', '.') .'</td>';
 							echo '<td>'.$value->stok.'</td>';
+							echo '<td><img height="100px" src="'.$photo.'"></td>';
 							echo '<td class = "action">
 								<div class="btn-group">
 									<button type="button" class="btn btn-info btn-flat">Aksi</button>

@@ -28,7 +28,7 @@ $this->load->view('template/sidebar');
         <div class="box-body">
 			<div class="row">
 				<div class="col-md-6">
-					<form role="form" method="post" action="<?php echo base_url('index.php/inventory/doEdit')?>">
+					<form role="form" method="post" action="<?php echo base_url('index.php/inventory/doEdit')?>" enctype="multipart/form-data">
 					<input type="hidden" name="id" id="id" value="<?php echo $detail->id_prod?>">
 						<div class="form-group">
 							<label>Produk</label>
@@ -68,6 +68,11 @@ $this->load->view('template/sidebar');
 								<input id="stok"  type="number" name="stok" class="form-control" value="<?php echo $detail->stok?>">
 								<span class="input-group-addon">Biji</span>
 							</div>
+						</div>
+						<div class="form-group">
+							<label>Foto</label>
+							<input type="file" name="photo" id="photo">							
+							<label><img height="100px" src="<?php echo base_url('assets/user_img/'. $detail->photo)?>"></label>
 						</div>
 						<div class="box-footer">
 							<button type="cancel" class="btn btn-warning">Batal</button>

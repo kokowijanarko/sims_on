@@ -7,6 +7,7 @@ class Inventory extends CI_Controller {
         parent::__construct();
 		$this->load->model('Inventory_model');
 		$this->load->library('authex');
+		$this->load->library('foto_upload');
 		
 		$login = $this->authex->logged_in();
 		if(!$login){
@@ -111,17 +112,22 @@ class Inventory extends CI_Controller {
 		// var_dump($_POST);die;
  
 			//var_dump($_POST);//die;
+			$foto_name = $_POST['produk'].'_'.$_POST['category'].'.jpeg';
 			$param_inv = array(
 				'nama_prod' => $_POST['produk'],
 				'jenis_prod' => $_POST['category'],
 				'harga' => $_POST['harga'],
-				'stok' => $_POST['stok']
+				'stok' => $_POST['stok'],
+				'photo'=>$foto_name
 			);
 			
 			// var_dump($param_inv);die;
 			
 			$result = $this->Inventory_model->insertProduct($param_inv);
-			
+			if($result && $_FILES['photo']['error'] != 4 && $_FILES['photo']['type'] == 'image/jpeg'){				
+				$result = $result && $this->foto_upload->process_image($_FILES['photo']['tmp_name'], $foto_name);	
+			}
+				
 			if($result == true){
 				redirect(base_url('index.php/inventory/index?msg=Am1'));
 			}else{
@@ -133,16 +139,21 @@ class Inventory extends CI_Controller {
 	}
 	
 	public function doEdit(){
- 
+			// var_dump($_FILES);die;
+			$foto_name = $_POST['produk'].'_'.$_POST['category'].'.jpeg';
 			$param_inv = array(
 				'nama_prod' => $_POST['produk'],
 				'jenis_prod' => $_POST['category'],
 				'harga' => $_POST['harga'],
-				'stok' => $_POST['stok']
+				'stok' => $_POST['stok'],
+				'photo'=>$foto_name
 			);
 			$id=$_POST['id'];
 			$result = $this->Inventory_model->updateProduct($param_inv, $id);
 			// var_dump($this->db->last_query());die;
+			if($result && $_FILES['photo']['error'] != 4 && $_FILES['photo']['type'] == 'image/jpeg'){				
+				$result = $result && $this->foto_upload->process_image($_FILES['photo']['tmp_name'], $foto_name);	
+			}
 			if($result == true){
 				redirect(base_url('index.php/inventory/index?msg=Em1'));
 			}else{

@@ -35,7 +35,8 @@ class Inventory_model extends CI_Model
 				IF(a.`jenis_prod` = 1, 'gamis', 'jilbab') as jenis_prod,
 				a.jenis_prod as `id_jenis`,
 				a.`harga`,
-				a.`stok`
+				a.`stok`,
+				a.`photo`
 			FROM produk a
 			WHERE
 				1=1
@@ -56,7 +57,8 @@ class Inventory_model extends CI_Model
 				a.`nama_prod`,
 				a.`jenis_prod`,
 				a.`harga`,
-				a.`stok`
+				a.`stok`,
+				a.`photo`
 			FROM produk a
 			WHERE a.id_prod = $id
 			
