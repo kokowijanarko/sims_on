@@ -1,6 +1,10 @@
 <?php
 	$photo = !empty($this->session->userdata('photo'))?$this->session->userdata('photo'):'default.jpg';
-	//var_dump($photo);die;
+	//var_dump($this->session->userdata('level'));die;
+	$hide='';
+	if($this->session->userdata('level') == 2){
+		$hide = 'hide';
+	}
 ?>
 <!-- Left side column. contains the sidebar -->
 <aside class="main-sidebar">
@@ -28,6 +32,8 @@
         </form>-->
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
+		
+		
         <ul class="sidebar-menu">
             <li class="header">MAIN MENU</li>
             <li id="menu_dashboard" class="treeview">

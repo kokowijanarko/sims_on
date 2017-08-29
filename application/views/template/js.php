@@ -26,15 +26,16 @@
 	jQuery(function($) {
 		var level = <?php echo $this->session->userdata('level')?>;
 		if(level == 2){
-			$('#menu_cashier').addClass('hide');
-		}
-		if(level == 3){		
 			$('#menu_user').addClass('hide');
+			$('#menu_report').addClass('hide');
 		}
-		if(level == 4){
-			$('#menu_cashier').addClass('hide');
-			$('#menu_user').addClass('hide');
-		}
+		// if(level == 3){		
+			// $('#menu_user').addClass('hide');
+		// }
+		// if(level == 4){
+			// $('#menu_cashier').addClass('hide');
+			// $('#menu_user').addClass('hide');
+		// }
 		console.log(level);		
 	});
 </script>

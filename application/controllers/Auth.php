@@ -21,7 +21,9 @@ class Auth extends CI_Controller {
 		$auth = $this->authex->login($_POST['key'], $_POST['password']);
 		if($auth){
 			redirect('dashboard');			
-		 
+		}else{
+			redirect(site_url(''));
+		}
 	}
 	
 	public function logout(){
