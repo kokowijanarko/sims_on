@@ -16,7 +16,7 @@ class Cashier extends CI_Controller {
 	public function index()
 	{
 		// var_dump($this->session->userdata('fullname'));die;
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+		 
 			if(isset($_GET['msg'])){
 				$data['message'] = $this->getMessage($_GET['msg']);
 			}
@@ -26,9 +26,7 @@ class Cashier extends CI_Controller {
 			$data['customer'] = $this->cashier_model->getCustomer();
 			
 			$this->load->view('admin/cashier/add', $data);
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 		
 		
 	}
@@ -59,7 +57,7 @@ class Cashier extends CI_Controller {
 	}
 	
 	public function add_order(){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+		 
 			$post = $_POST;	
 			//var_dump($post);
 			$param_order = array(
@@ -100,9 +98,7 @@ class Cashier extends CI_Controller {
 				echo json_encode(FALSE);
 				exit;
 			}
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 		
 	}
 	
@@ -115,7 +111,7 @@ class Cashier extends CI_Controller {
 	}
 	
 	public function doAdd(){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+		 
 			//var_dump($_POST);//die;
 			$param_inv = array(
 				'inv_name' => $_POST['produk'],
@@ -133,14 +129,12 @@ class Cashier extends CI_Controller {
 			}else{
 				redirect(base_url('index.php/cashier/index?msg=Am0'));
 			}
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 		
 	}
 	
 	public function doEdit(){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+		 
 			//var_dump($_POST);die;
 			$param_inv = array(
 				'inv_name' => $_POST['produk'],
@@ -158,9 +152,7 @@ class Cashier extends CI_Controller {
 			}else{
 				redirect(base_url('index.php/cashier/index?msg=Em0'));
 			}
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 		
 	}
 	
@@ -179,14 +171,12 @@ class Cashier extends CI_Controller {
 	}
 	
 	public function inv_print($id){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+		 
 			$data['inv'] = $this->cashier_model->getInvDetailByInvNumber($id);		
 			$data['inv_detail'] = $this->cashier_model->getInvDetailById($data['inv']->id_penj);
 			// var_dump($data);die;
 			$this->load->view('admin/cashier/print', $data);
-		}else{
-			redirect(site_url(''));
-		}
+		 
 	}
 	
 	public function list_invoice(){
@@ -204,7 +194,7 @@ class Cashier extends CI_Controller {
 	}
 	
 	public function doAcQuittal(){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+		 
 			$post = $_POST;
 			$result = 0;
 			if(!empty($post['invo_number'])){
@@ -222,13 +212,11 @@ class Cashier extends CI_Controller {
 			}
 			echo json_encode($result);
 			exit;
-		}else{
-			redirect(site_url(''));
-		}		
+		 		
 	}
 	
 	public function orderDone($id){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+		 
 			$msg = '';
 			$this->db->trans_start();
 			if(!empty($id)){
@@ -268,9 +256,7 @@ class Cashier extends CI_Controller {
 			$url = site_url('cashier/list_invoice');				
 			redirect($url);
 			
-		}else{
-			redirect(site_url(''));
-		}
+		 
 	}
 	private function getMessage($idx){
 		if($idx == 'Em1'){

@@ -18,20 +18,18 @@ class User extends CI_Controller {
 	
 	public function index()
 	{	
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
+ 
 			if(isset($_GET['msg'])){
 				$data['message'] = $this->getMessage($_GET['msg']);
 			}
 			$data['list'] = $this->user_model->getUser();
 			// var_dump($data);die;
 			$this->load->view('admin/user/list', $data);
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 	}
 	
 	public function add(){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
+ 
 			$data['level'] = array(
 				array(
 					'id'=>2, 
@@ -45,21 +43,17 @@ class User extends CI_Controller {
 			);
 			//var_dump($data);die;
 			$this->load->view('admin/user/add', $data);
-		}else{
-			redirect(site_url(''));
-		}		
+		 		
 	}
 	
 	public function edit($id){
-		if($this->session->userdata('level') == 1  || $this->session->userdata('level') == 2){
+		 
 			$data['level'] = $this->user_model->getUserLevel();	
 			$data['detail'] = $this->user_model->getDetailUser($id);
 			// var_dump($data);die;
 			$this->load->view('admin/user/edit', $data);
 
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 		
 	}
 	
@@ -207,7 +201,7 @@ class User extends CI_Controller {
 	}
 	
 	public function doDelete($id){
-		if($this->session->userdata('level') == 1  ){
+		 
 			$user = $this->user_model->getDetailUser($id);
 			unlink('assets/user_img/'. $user->photo);
 			$result = $this->user_model->deleteInv($id);
@@ -217,21 +211,17 @@ class User extends CI_Controller {
 				redirect(site_url('user/index?msg=Dm0'));			
 			}
 
-		}else{
-			redirect(site_url(''));
-		}		
+		 		
 	}
 	
 	public function profile($id){
-		if(!empty($this->session->userdata('level'))){
+		 
 			// $data['level'] = $this->user_model->getUserLevel();	
 			$data['detail'] = $this->user_model->getDetailUser($id);
 			// var_dump($data);die;
 			$this->load->view('admin/user/profile', $data);
 
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 	}
 	private function do_upload($name)
         {

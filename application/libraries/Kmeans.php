@@ -13,9 +13,8 @@ class kmeans{
 		if(!empty($data)){
 			
 			$min_data_count = 0;
-			foreach($data as $idx => $val){
+			foreach($data as $idx => $val){			
 				$data_value[$val->product_id] = $val->jumlah;
-				
 				if($val->jumlah > 0){
 					$min_data_count++;
 				}				
@@ -102,21 +101,21 @@ class kmeans{
 				// '78'=>	22
 			// );		
 			
-			if($min_data_count < 25){				
+			if($min_data_count < 0){				
 				return array('msg'=>'Data kurang banyak (min25entry) !', 'data'=>'');
 			}else{
 				// #1 penetapan nilai awal centroid
 				$data_sum = array_sum($data_value);
 				$data_count = count($data_value);			
 				$c_rendah = min($data_value);
-				$c_tinggi = max($data_value);
-				
+				$c_tinggi = max($data_value);				
 				$c_sedang = (min($data_value) + max($data_value)) / 2;
 				
-				// $c_rendah = ($c_sedang + $min) / 2 ;
-				// $c_tinggi = ($c_sedang + $max) / 2;
+				// $c_rendah = 1 ;
+				// $c_sedang = 2;
+				// $c_tinggi = 3;
 				
-				array_push($centroid, array($c_rendah, $c_sedang, $c_tinggi));
+				array_push($centroid, array('rendah' => $c_rendah, 'sedang' => $c_sedang, 'tinggi' => $c_tinggi));
 				//var_dump($centroid);die;
 				
 				// iterasi untuk menghitung centroid dan jarak data terhadap centroid pada tahap awal
@@ -131,6 +130,8 @@ class kmeans{
 				array_push($keanggotaan_tiap_cluster, $keanggotaan);
 				
 				$centroid_baru = $this->centroidBaru($keanggotaan);
+				array_push($centroid, $centroid_baru);
+				
 				// var_dump($centroid_baru);
 				
 				foreach($data_value as $idx => $val){
@@ -163,6 +164,7 @@ class kmeans{
 						}else{
 							$idx_jarak_last = count($jarak_tiap_loop) - 1;
 							$centroid_baru = $this->centroidBaru($keanggotaan_tiap_cluster[$idx_last], $jarak_tiap_loop[$idx_jarak_last]);
+							array_push($centroid, $centroid_baru);
 							foreach($data_value as $idx => $val){
 								$jarak[$idx] = $this->hitungJarakKeCentroid($val, $centroid_baru['rendah'], $centroid_baru['sedang'], $centroid_baru['tinggi']);					
 							}
@@ -175,7 +177,15 @@ class kmeans{
 				
 				//var_dump($keanggotaan_tiap_cluster);
 				$idx_last = count($keanggotaan_tiap_cluster) - 1;
-				return array('msg'=>'', 'data'=>$keanggotaan_tiap_cluster[$idx_last]);
+				return array(
+					'msg'=>'', 
+					'data'=>$keanggotaan_tiap_cluster[$idx_last], 
+					'data_detail' => array(
+						'jarak' => $jarak_tiap_loop,
+						'keanggotaan' => $keanggotaan_tiap_cluster,	
+						'centroid' => $centroid
+					)
+				);
 			}
 		}else{
 			var_dump('data kosong');

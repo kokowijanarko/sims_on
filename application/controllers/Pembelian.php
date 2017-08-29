@@ -18,31 +18,27 @@ class Pembelian extends CI_Controller {
 	
 	public function index()
 	{	
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
+ 
 			if(isset($_GET['msg'])){
 				$data['message'] = $this->getMessage($_GET['msg']);
 			}
 			$data['list'] = $this->pembelian_model->getPembelian();
 			// var_dump($data);die;
 			$this->load->view('admin/pembelian/list', $data);
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 	}
 	
 	public function add(){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
+ 
 			
 			$data['produk'] = $this->cashier_model->getInventory();
 			$data['supplier'] = $this->pembelian_model->getSupplier();
 			// var_dump($data);die;
 			$this->load->view('admin/pembelian/add', $data);
-		}else{
-			redirect(site_url(''));
-		}		
+		 		
 	}
 	public function add_pembelian(){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+		 
 			$post = $_POST;	
 			// var_dump($post);die;
 			$param_order = array(
@@ -81,20 +77,16 @@ class Pembelian extends CI_Controller {
 				echo json_encode(FALSE);
 				exit;
 			}
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 		
 	}
 	public function edit($id){
-		if($this->session->userdata('level') == 1  || $this->session->userdata('level') == 2){
+		 
 			$data['detail'] = $this->pembelian_model->getDetailPembelian($id);
 			// var_dump($data);die;
 			$this->load->view('admin/pembelian/edit', $data);
 
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 		
 	}
 	
@@ -136,7 +128,7 @@ class Pembelian extends CI_Controller {
 	
 	
 	public function doDelete($id){
-		if($this->session->userdata('level') == 1  ){
+		 
 			
 			$result = $this->pembelian_model->deletePembelian($id);
 			if($result == true){
@@ -145,9 +137,7 @@ class Pembelian extends CI_Controller {
 				redirect(site_url('Pembelian/index?msg=Dm0'));			
 			}
 
-		}else{
-			redirect(site_url(''));
-		}		
+		 		
 	}
 	
 	public function get_detail_pembelian($id){

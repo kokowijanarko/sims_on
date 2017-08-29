@@ -16,14 +16,12 @@ class Order extends CI_Controller {
 	
 	public function index()
 	{
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 3){
+		 
 			
 			$data['list'] = $this->order_model->getOrder();
 			// var_dump($data);die;
 			$this->load->view('admin/order/list', $data);
 			
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 	}
 }

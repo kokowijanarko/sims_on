@@ -31,7 +31,7 @@ class Report extends CI_Controller {
 	
 	
 	public function daily_list(){
-		if(!empty($this->session->userdata('level'))){
+		 
 			$filter = array(
 				'user'=>'all'
 			);
@@ -104,9 +104,7 @@ class Report extends CI_Controller {
 			$data['user'] = $this->report_model->getUser();
 			// var_dump($data);die;			
 			$this->load->view('admin/report/list', $data);
-		}else{
-			redirect(site_url(''));
-		}			
+		 			
 	}
 	
 	public function get_detail_invoice(){
@@ -248,4 +246,53 @@ class Report extends CI_Controller {
 			$mPDF->Output($title . '.pdf', 'D');
 			exit;
 	}	
+	
+	public function kmeans_detail(){
+		$date_start = '';		
+		$date_end = '';		
+		$user = '';		
+		
+		if($_GET['date_start'] !== '' || $_GET['date_start'] !== '1970-01-01'){
+			$date_start = $_GET['date_start'];
+		}
+		
+		if($_GET['date_end'] !== '' || $_GET['date_end'] !== '1970-01-01'){
+			$date_end = $_GET['date_end'];
+		}
+		
+		if($_GET['user'] !== ''){
+			$user = $_GET['user'];
+		}
+		
+		$filter = array(
+			'date'=> $date,
+			'date_end'=> $date_end,
+			'user'=>$_POST['user']
+		);
+		
+		$prod = $this->dasboard_model->getSellingStatistic($filter);
+		$data['statistic'] = $prod;
+		$data_kmeans = $this->kmeans->hitung($prod);
+		// var_dump($prod, $data_kmeans);die;
+		$txt = '';
+		if($data_kmeans['msg'] !== ''){
+			$txt = $data_kmeans['msg'];
+		}else{
+			$kmeans = $data_kmeans['data_detail'];
+			foreach($kmeans['jarak'] as $idx=>$val){
+				foreach($val as $key=>$value){
+					$product = $this->dasboard_model->getProductDetail($key);
+					// var_dump($product);die;
+					$kmeans['jarak'][$idx][$key]['product_name'] = $product[0]->product_name;
+					$kmeans['jarak'][$idx][$key]['jumlah'] = $product[0]->jumlah;
+				}
+				
+			}
+			$data['kmeans'] = $kmeans;
+			
+		}
+		// var_dump($kmeans['jarak'], $kmeans['centroid']);die;
+		$this->load->view('admin/report/kmeans_calculation', $data);
+		
+	}
 }

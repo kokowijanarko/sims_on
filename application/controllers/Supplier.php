@@ -18,35 +18,29 @@ class Supplier extends CI_Controller {
 	
 	public function index()
 	{	
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
+ 
 			if(isset($_GET['msg'])){
 				$data['message'] = $this->getMessage($_GET['msg']);
 			}
 			$data['list'] = $this->supplier_model->getSupplier();
 			// var_dump($data);die;
 			$this->load->view('admin/supplier/list', $data);
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 	}
 	
 	public function add(){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
+ 
 			$this->load->view('admin/supplier/add');
-		}else{
-			redirect(site_url(''));
-		}		
+		 		
 	}
 	
 	public function edit($id){
-		if($this->session->userdata('level') == 1  || $this->session->userdata('level') == 2){
+		 
 			$data['detail'] = $this->supplier_model->getDetailSupplier($id);
 			// var_dump($data);die;
 			$this->load->view('admin/supplier/edit', $data);
 
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 		
 	}
 	
@@ -172,7 +166,7 @@ class Supplier extends CI_Controller {
 	}
 	
 	public function doDelete($id){
-		if($this->session->userdata('level') == 1  ){
+		 
 			
 			$result = $this->supplier_model->deleteSupplier($id);
 			if($result == true){
@@ -181,9 +175,7 @@ class Supplier extends CI_Controller {
 				redirect(site_url('supplier/index?msg=Dm0'));			
 			}
 
-		}else{
-			redirect(site_url(''));
-		}		
+		 		
 	}
 	
 	

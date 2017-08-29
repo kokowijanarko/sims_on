@@ -16,7 +16,7 @@ class Inventory extends CI_Controller {
 	
 	public function index()
 	{	
-		if(!empty($this->session->userdata('level'))){
+		 
 			if(isset($_GET['msg'])){
 				$data['message'] = $this->getMessage($_GET['msg']);
 			}
@@ -52,13 +52,11 @@ class Inventory extends CI_Controller {
 			$data['filter'] = $filter;
 			// var_dump($data);die;
 			$this->load->view('admin/inventory/list', $data);
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 	}
 	
 	public function add(){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
+ 
 			
 			// $cat = $this->Inventory_model->getProductCategory();
 			
@@ -83,15 +81,13 @@ class Inventory extends CI_Controller {
 			
 			// var_dump($data);die;
 			$this->load->view('admin/inventory/add', $data);
-		}else{
-			redirect(site_url(''));
-		}		
+		 		
 	}
 	
 	
 	
 	public function edit($id){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
+ 
 			$category = array(
 				array(
 					'id'=>1,
@@ -107,15 +103,13 @@ class Inventory extends CI_Controller {
 			// var_dump($data['detail']);die;
 			$this->load->view('admin/inventory/edit', $data);
 
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 		
 	}
 	
 	public function doAdd(){
 		// var_dump($_POST);die;
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
+ 
 			//var_dump($_POST);//die;
 			$param_inv = array(
 				'nama_prod' => $_POST['produk'],
@@ -134,14 +128,12 @@ class Inventory extends CI_Controller {
 				redirect(base_url('index.php/inventory/index?msg=Am0'));
 			}
 
-		}else{
-			redirect(site_url(''));
-		}
+		 
 		
 	}
 	
 	public function doEdit(){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
+ 
 			$param_inv = array(
 				'nama_prod' => $_POST['produk'],
 				'jenis_prod' => $_POST['category'],
@@ -157,13 +149,11 @@ class Inventory extends CI_Controller {
 				redirect(base_url('index.php/inventory/index?msg=Em0'));
 			}
 
-		}else{
-			redirect(site_url(''));
-		}
+		 
 	}
 	
 	public function doDelete($id){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
+ 
 			$result = $this->Inventory_model->deleteInv($id);
 			if($result == true){
 				redirect(site_url('inventory/index?msg=Dm1'));
@@ -171,9 +161,7 @@ class Inventory extends CI_Controller {
 				redirect(site_url('inventory/index?msg=Dm0'));			
 			}
 
-		}else{
-			redirect(site_url(''));
-		}		
+		 		
 	}
 	
 	private function getMessage($idx){

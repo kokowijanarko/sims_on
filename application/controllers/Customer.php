@@ -18,35 +18,29 @@ class Customer extends CI_Controller {
 	
 	public function index()
 	{	
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
+ 
 			if(isset($_GET['msg'])){
 				$data['message'] = $this->getMessage($_GET['msg']);
 			}
 			$data['list'] = $this->Customer_model->getCustomer();
 			// var_dump($data);die;
 			$this->load->view('admin/customer/list', $data);
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 	}
 	
 	public function add(){
-		if($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2){
+ 
 			$this->load->view('admin/customer/add');
-		}else{
-			redirect(site_url(''));
-		}		
+		 		
 	}
 	
 	public function edit($id){
-		if($this->session->userdata('level') == 1  || $this->session->userdata('level') == 2){
+		 
 			$data['detail'] = $this->Customer_model->getDetailCustomer($id);
 			// var_dump($data);die;
 			$this->load->view('admin/customer/edit', $data);
 
-		}else{
-			redirect(site_url(''));
-		}	
+		 	
 		
 	}
 	
@@ -88,7 +82,7 @@ class Customer extends CI_Controller {
 	
 	
 	public function doDelete($id){
-		if($this->session->userdata('level') == 1  ){
+		 
 			
 			$result = $this->Customer_model->deleteCustomer($id);
 			if($result == true){
@@ -97,9 +91,7 @@ class Customer extends CI_Controller {
 				redirect(site_url('Customer/index?msg=Dm0'));			
 			}
 
-		}else{
-			redirect(site_url(''));
-		}		
+		 		
 	}
 	
 	

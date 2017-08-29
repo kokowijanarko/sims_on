@@ -114,9 +114,18 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 					</div>
 				</div>
 				<div class="box-body">
+					<div>
+					<a href="<?php echo site_url('report/kmeans_detail?date_start='. date('Y-m-d', strtotime($post['date'])) .'&date_end='.date('Y-m-d', strtotime($post['date_end'])).'&user='. $post['user'])?>" target="_blank">
+						<button class="btn btn-success">
+							Detail Perhitungan
+						</button>
+					</a>
+					</div>
+					<div>
                     <table id = "table_kmeans" class="table">
 						<?php echo $kmeans?>
                     </table>
+					</div>
 				</div>
 			</div>
 	<div class="box">
