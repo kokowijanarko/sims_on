@@ -103,7 +103,7 @@ class kmeans{
 			// );		
 			
 			if($min_data_count < 25){				
-				return array('msg'=>'Too much zero value data !', 'data'=>'');
+				return array('msg'=>'Data kurang banyak (min25entry) !', 'data'=>'');
 			}else{
 				// #1 penetapan nilai awal centroid
 				$data_sum = array_sum($data_value);

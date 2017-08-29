@@ -12,7 +12,7 @@ MySQL - 5.5.5-10.1.9-MariaDB : Database - newalesa
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-USE `newalesa`;
+USE `newalesa_v2`;
 
 /*Table structure for table `customer` */
 

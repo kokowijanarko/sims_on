@@ -4,7 +4,7 @@
     <div class="pull-right hidden-xs">
         <b>Version</b> 2.0
     </div>
-    <strong>Copyright &copy; 2016  All rights reserved.
+    <strong>Copyright ida fitriani &copy; 2016  All rights reserved.
 </footer>
 </div><!-- ./wrapper -->
 

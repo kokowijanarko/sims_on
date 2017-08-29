@@ -2,6 +2,7 @@
 $this->load->view('template/head');
 ?>
 
+
 <!--tambahkan custom css disini-->
 <!-- iCheck -->
 <link href="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/iCheck/flat/blue.css') ?>" rel="stylesheet" type="text/css" />
@@ -27,7 +28,6 @@ $this->load->view('template/sidebar');
         Dashboard
         <small>Alesa</small>
     </h1>
-    
 </section>
 
 <!-- Main content -->
@@ -83,6 +83,7 @@ $this->load->view('template/sidebar');
 </section><!-- /.content -->
 
 
+
 <?php
 $this->load->view('template/js');
 ?>
@@ -100,7 +101,6 @@ $this->load->view('template/js');
 
 <!-- ChartJS 1.0.1 -->
 <script src="<?php echo base_url('assets/AdminLTE-2.0.5/plugins/chartjs/Chart.min.js')?>"></script>
-
 
 <script type="text/javascript">
 	jQuery(function($) {
@@ -138,7 +138,7 @@ $this->load->view('template/js');
 		});
 	}
 	
-	
+
 </script>
 <?php
 $this->load->view('template/foot');

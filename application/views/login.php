@@ -23,10 +23,10 @@
     <body class="login-page">
         <div class="login-box">
             <div class="login-logo">
-                <a href="#"><b>Alesa</b>Sistem Informasi Manajemen Stok</a>
+                <a href="#"><b>Sistem Informasi Manajemen Stok</b><p>Alesa Hijab</p></a>
             </div><!-- /.login-logo -->
             <div class="login-box-body">
-                <p class="login-box-msg">Sign in to start your session</p>
+                <p class="login-box-msg">Masukkan Username dan Password Anda</p>
                 <form action="<?php echo site_url('auth/login') ?>" method="post">
                     <div class="form-group has-feedback">
                         <input type="text"name="key" class="form-control" placeholder="Username"/>
