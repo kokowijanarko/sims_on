@@ -2,9 +2,6 @@
 	$photo = !empty($this->session->userdata('photo'))?$this->session->userdata('photo'):'default.jpg';
 	//var_dump($this->session->userdata('level'));die;
 	$hide='';
-	if($this->session->userdata('level') == 2){
-		$hide = 'hide';
-	}
 ?>
 <!-- Left side column. contains the sidebar -->
 <aside class="main-sidebar">
@@ -67,7 +64,7 @@
                     <li id="child_menu_report_laporan_harian"><a href="<?php echo site_url('report/daily_list') ?>"><i class="fa fa-circle-o"></i>Laporan penjualan</a></li>
                 </ul>
             </li>
-			<li id="menu_user" class="treeview">
+			<li id="menu_pembelian" class="treeview">
                 <a href="<?php echo site_url('#')?>">
 					<i class="fa fa-files-o"></i> <span>Pembelian</span><i class="fa fa-angle-left pull-right"></i>
                 </a>       
