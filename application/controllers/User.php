@@ -48,7 +48,17 @@ class User extends CI_Controller {
 	
 	public function edit($id){
 		 
-			$data['level'] = $this->user_model->getUserLevel();	
+			$data['level'] = array(
+				array(
+					'id'=>2, 
+					'name'=>'admin'
+				),
+				array(
+					'id'=>3, 
+					'name'=>'owner'
+				),
+			
+			);
 			$data['detail'] = $this->user_model->getDetailUser($id);
 			// var_dump($data);die;
 			$this->load->view('admin/user/edit', $data);
@@ -90,21 +100,25 @@ class User extends CI_Controller {
 	}
 	
 	public function doEdit(){
-			$this->db->trans_start();
-			$foto_name = str_replace(' ', '_', $_POST['user_name']).'-'.$_POST['level'].'.jpeg';
+			// var_dump($_FILES);die;
+			$this->db->trans_start();			
 			$param = array(
-				'user_name'=>$_POST['user_name'],
-				'user_username'=>$_POST['user_username'],
-				'user_level_id'=>$_POST['level'],
-				'user_desc'=>$_POST['deskripsi'],
-				'user_photo_name'=>$foto_name
+				'nama_user'=>$_POST['username'],
+				'level'=>$_POST['level']
 			);
 			$id=$_POST['id'];
 			$result = $this->user_model->updateUser($param, $id);
 			if($result && $_FILES['photo']['error'] != 4){
-				$upload = $this->do_upload($foto_name);		
-				// var_dump($upload);die;
+				$foto_name = str_replace(' ', '_', $_POST['username']).'-'.$_POST['level'].'.jpeg';
+				$param = array(
+					'photo'=>$foto_name
+				);
+				$result = $result && $this->user_model->updateUser($param, $id);
+				if($result){
+					$result = $result && $this->foto_upload->process_image($_FILES['photo']['tmp_name'], $foto_name);	
+				}
 			}
+			
 			$this->db->trans_complete($result);
 			if($result == true){
 				redirect(base_url('index.php/user/index?msg=Em1'));
@@ -124,14 +138,12 @@ class User extends CI_Controller {
 			$param = array();
 			if($_POST['user_password'] != ''){
 				$old_password = md5($_POST['user_password_old']);
-				if($detail->user_password == $old_password){
+				if($detail->password == $old_password){
 					if($_POST['user_password_conf'] == $_POST['user_password']){
 						$new_password = md5($_POST['user_password']);
 						$param = array(
-							'nama_user'=>$_POST['user_username'],
-							'level'=>$_POST['level'],
-							'password'=>$new_password,
-							'photo'=>$foto_name
+							'nama_user'=>$_POST['username'],
+							'password'=>$new_password
 						);
 					}else{
 						$msg = '
@@ -151,11 +163,7 @@ class User extends CI_Controller {
 				}
 			}else{
 				$param = array(
-					'user_name'=>$_POST['user_name'],
-					'user_username'=>$_POST['user_username'],
-					'user_email'=>$_POST['user_email'],
-					'user_desc'=>$_POST['deskripsi'],
-					'user_photo_name'=>$foto_name
+					'nama_user'=>$_POST['username']
 				);
 
 			}
@@ -163,20 +171,16 @@ class User extends CI_Controller {
 				
 				$result = $this->user_model->updateUser($param, $id);
 			}
-			var_dump($_FILES);
+			// var_dump($_FILES);
+			
 			if($result && $_FILES['photo']['error'] != 4){
-				unlink('assets/user_img/'. $foto_name);	
-				$upload = $this->do_upload($foto_name);	
-				
-				$this->session->set_userdata("photo", $foto_name);
-				//var_dump($this->session->userdata());die;
-				if($upload != ''){
-					$msg = '
-						<div class="alert alert-danger alert-dismissible disabled">
-							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-							<h4><i class="icon fa fa-check"></i> '. $upload .' !</h4>
-						</div>
-					';
+				$foto_name = str_replace(' ', '_', $_POST['username']).'-'.$_POST['level'].'.jpeg';
+				$param = array(
+					'photo'=>$foto_name
+				);
+				$result = $result && $this->user_model->updateUser($param, $id);
+				if($result){
+					$result = $result && $this->foto_upload->process_image($_FILES['photo']['tmp_name'], $foto_name);	
 				}
 			}
 			if($result && !isset($msg)){
@@ -216,7 +220,17 @@ class User extends CI_Controller {
 	
 	public function profile($id){
 		 
-			// $data['level'] = $this->user_model->getUserLevel();	
+			$data['level'] = array(
+				array(
+					'id'=>2, 
+					'name'=>'admin'
+				),
+				array(
+					'id'=>3, 
+					'name'=>'owner'
+				),
+			
+			);
 			$data['detail'] = $this->user_model->getDetailUser($id);
 			// var_dump($data);die;
 			$this->load->view('admin/user/profile', $data);

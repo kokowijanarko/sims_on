@@ -10,17 +10,7 @@ $this->load->view('template/topbar');
 $this->load->view('template/sidebar');
 ?>
 <!-- Content Header (Page header) -->
-<section class="content-header">
-    <h1>
-        User 
-        <small></small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Examples</a></li>
-        <li class="active">Blank page</li>
-    </ol>
-</section>
+
 <!-- Main content -->
 <section class="content">
 
@@ -37,14 +27,10 @@ $this->load->view('template/sidebar');
 			<div class="row">
 				<div class="col-md-6">
 					<form role="form" method="post" action="<?php echo site_url('user/doEdit')?>" enctype="multipart/form-data">
-					<input type="hidden" value="<?php echo $detail->user_id?>" name="id" id="id">
-						<div class="form-group">
-							<label>Nama Lengkap</label>
-							<input type="text" value="<?php echo $detail->user_name?>" name="user_name" id="user_name" class="form-control" placeholder="Nama Lengkap">
-						</div>
+					<input type="hidden" value="<?php echo $detail->id_user?>" name="id" id="id">
 						<div class="form-group">
 							<label>Username</label>
-							<input type="text" value="<?php echo $detail->user_username?>" name="user_username" id="user_username" class="form-control" placeholder="Username">
+							<input type="text" value="<?php echo $detail->nama_user?>" name="username" id="username" class="form-control" placeholder="Username">
 						</div>
 						<div class="form-group">
 							<label>Level</label>
@@ -53,10 +39,10 @@ $this->load->view('template/sidebar');
 								<?php
 									foreach($level as $lvl){
 										$cek='';
-										if($lvl->level_id == $detail->user_level_id){
+										if($lvl['id'] == $detail->level){
 											$cek = 'selected';
 										}
-										echo '<option value="'.$lvl->level_id .'" '. $cek .'>'.$lvl->level_name .'</option>';
+										echo '<option value="'.$lvl['id'].'" '. $cek .'>'.$lvl['name'] .'</option>';
 									}
 								?>
 							</select>
@@ -64,13 +50,8 @@ $this->load->view('template/sidebar');
 						<div class="form-group">
 							<label>Foto</label>
 							<input type="file" name="photo" id="photo">							
-							<label><img height="100px" src="<?php echo base_url('assets/user_img/'. $detail->user_photo_name)?>"></label>
+							<label><img height="100px" src="<?php echo base_url('assets/user_img/'. $detail->photo)?>"></label>
 						</div>
-						<div class="form-group">
-							<label>Deskripsi</label>
-							<textarea id="deskripsi" name="deskripsi" class="form-control" rows="3" placeholder="Enter ..."><?php echo $detail->user_desc?></textarea>
-						</div>
-						
 						<div class="box-footer">
 							<button type="cancel" class="btn btn-warning">Batal</button>
 							<button type="submit" class="btn btn-info pull-right">Simpan</button>

@@ -30,10 +30,11 @@ $this->load->view('template/sidebar');
 				?>
 				<div class="col-md-6">
 					<form role="form" method="post" action="<?php echo site_url('user/doEditProffile')?>" enctype="multipart/form-data">
-					<input type="hidden" value="<?php echo $detail->user_id?>" name="id" id="id">
+					<input type="hidden" value="<?php echo $detail->id_user?>" name="id" id="id">
+					<input type="hidden" value="<?php echo $detail->level?>" name="level" id="level">
 						<div class="form-group">
 							<label>Username</label>
-							<input type="text" value="<?php echo $detail->user_username?>" name="user_username" id="user_username" class="form-control" placeholder="Level">
+							<input type="text" value="<?php echo $detail->nama_user?>" name="username" id="username" class="form-control" placeholder="Nama User">
 						</div>				
 						<div class="form-group">
 							<label>Password baru</label>
@@ -81,6 +82,7 @@ $this->load->view('template/js');
 
 <script>	
 	jQuery(function($) {
+		$('#user_password').val('');
 		$('#user_password').keyup(function(){
 			$('#conf_pass').removeClass('hide');
 			$('#old_pass').removeClass('hide');
