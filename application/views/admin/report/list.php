@@ -115,7 +115,7 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 				</div>
 				<div class="box-body">
 					<div>
-					<a href="<?php echo site_url('report/kmeans_detail?date_start='. date('Y-m-d', strtotime($post['date'])) .'&date_end='.date('Y-m-d', strtotime($post['date_end'])).'&user='. $post['user'])?>" target="_blank">
+					<a href="<?php echo site_url('report/kmeans_detail?date_start='. $post['date'] .'&date_end='.$post['date_end'].'&user='. $post['user'])?>" target="_blank">
 						<button class="btn btn-success">
 							Detail Perhitungan
 						</button>
@@ -160,7 +160,6 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 						$no=1;
 						$amount = array();
 						foreach($invoice as $val){	
-							array_push($amount, $val->order_amount);
 							echo'
 								<tr>
 									<td>'. $no .'</td>
