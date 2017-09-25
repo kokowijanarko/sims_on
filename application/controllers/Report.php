@@ -270,7 +270,14 @@ class Report extends CI_Controller {
 			'user'=>$_POST['user']
 		);
 		
-		$prod = $this->dasboard_model->getSellingStatistic($filter);
+		$data_prod = $this->dasboard_model->getSellingStatistic($filter);
+		$prod = array();
+		foreach($data_prod as $key=>$val){
+			if($val->jumlah != 0){
+				$prod[] = $val;
+			}
+		}
+		// var_dump($this->db->last_query(), $prod);die;
 		$data['statistic'] = $prod;
 		$data_kmeans = $this->kmeans->hitung($prod);
 		// var_dump($prod, $data_kmeans);die;

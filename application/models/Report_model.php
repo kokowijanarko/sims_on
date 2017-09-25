@@ -39,7 +39,7 @@ class Report_model extends CI_Model
 		}
 		if(!empty($filter['user']) && $filter['user'] !== 'all'){
 			$str .= " AND b.`id_user` =". $filter['user'];
-		}
+		}		
 		
 		$sql = str_replace('---search---', $str, $sql);
 		$query = $this->db->query($sql);	

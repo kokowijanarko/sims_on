@@ -27,6 +27,50 @@ $this->load->view('template/sidebar');
     <!-- Default box -->
 	<div class="box">
 		<div class="box-header with-border">
+			<h3 class="box-title">Tahapan Perhitungan Kmeans</h3>    
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>						
+				<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+			</div>
+		</div>
+		<div class="box-body">
+			<div>
+				<p> 
+					1. Menentukan data set dan jumlah cluster (centroid). Nilai centroid awal dalam hal ini adalah klasifikasi peminat produk tingggi, sedang, dan rendah.
+					Nilai centroid awal ditentukan dengan perhitungan sebagai berikut: <br>
+					a. Centroid Tinggi = jumlah penjualan produk tertinggi.<br>
+					b. Centroid Rendah = jumlah penjualan produk terrendah.<br>
+					c. Centroid Sedang = (Centroid Tinggi + Centroid Rendah) : 2
+				</p>
+				<p> 
+					2. Mengalokasikan data sesuai dengan jumlah cluster yang telah ditentukan dengan cara mrnghitung jarak 
+					setiap data terhadap tiap-tiap centroid dengan rumus:<br>
+					<img height="35px" src="<?php echo base_url('assets/formula_img/jarak_centroid.JPG')?>">					
+					
+				</p>
+				<p> 
+					3. Menghitung nilai centroid baru pada tiap-tiap cluster.<br>
+					<img height="45px" src="<?php echo base_url('assets/formula_img/centroid_baru.JPG')?>">	dengan Ni adalah jumlah data pada anggota cluster ke-i, 
+					X_kj adalah jarak data dengan centroid
+					
+					
+				</p>
+				<p> 
+					4. Mengalokasikan masing-masing data ke-centroid terdekat dengan menghitung selisih jumlah total penjualan 
+					tiap produk dengan nilai centroid tiap-tiap cluster. Jumlah yang paling kecil dialokasikan 
+					pada anggota cluster tersebut.<br>
+					
+				</p>
+				<p> 
+					5. Mengulangi langkah 3 dan 4 hingga keanggottan masing-masing cluster tidak berubah.<br>
+					
+				</p>
+			</div>
+		</div>
+	</div>
+	
+	<div class="box">
+		<div class="box-header with-border">
 			<h3 class="box-title">Statistik Penjualan</h3>    
 			<div class="box-tools pull-right">
 				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>						
@@ -34,13 +78,6 @@ $this->load->view('template/sidebar');
 			</div>
 		</div>
 		<div class="box-body">
-			<div class="box-header with-border">
-				<h3 class="box-title">Periode <?php echo $filter['date_start'] ?> - <?php echo $filter['date_end'] ?> </h3>    
-				<div class="box-tools pull-right">
-					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>						
-					<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-				</div>
-			</div>
 			<div>
 				<table id = "table_statistic" class="table">
 				<thead>
