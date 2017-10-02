@@ -183,7 +183,48 @@ $this->load->view('template/sidebar');
 	
 
 ?>
-			
+	
+	<div class="box">
+		<div class="box-header with-border">
+			<h3 class="box-title">Hasil akhir Clustering</h3>    
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>						
+				<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+			</div>
+		</div>
+		<div class="box-body">
+			<?php
+				foreach($final_kmeans as $idx=>$val){
+					
+					echo '<div><h4>'. strtoupper($idx) .'</h4>';
+					echo'
+						<table class="table">
+							<thead>
+								<tr>
+									<th>NO</th>
+									<th>Produk</th>
+								</tr>
+							</thead>
+							<tbody>';
+					$i=1;
+					foreach($val as $key=>$value){
+						echo '
+							<tr>
+								<td>'. $i .'</td>
+								<td>'. $value->product_name .'</td>
+							</tr>
+						';
+						$i++;
+					}
+					echo '</tbody></table></div>';
+				}
+				
+			?>
+		
+		
+		</div>
+	</div>
+		
 </section><!-- /.content -->
 
 <?php 

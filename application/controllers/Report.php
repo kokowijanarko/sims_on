@@ -151,7 +151,16 @@ class Report extends CI_Controller {
 		// var_dump($this->db->last_query(), $prod);die;
 		$data['statistic'] = $prod;
 		$data_kmeans = $this->kmeans->hitung($prod);
-		// var_dump($prod, $data_kmeans);die;
+		
+		foreach($data_kmeans['data'] as $idx=>$val){
+			foreach($val as $key=>$value){
+				$product_detail = $this->dasboard_model->getProductDetail($key);
+				$final_kmeans[$idx][$key] = $product_detail[0];
+			}
+		}
+		
+		$data['final_kmeans']=$final_kmeans;
+		
 		$txt = '';
 		if($data_kmeans['msg'] !== ''){
 			$txt = $data_kmeans['msg'];
@@ -169,6 +178,9 @@ class Report extends CI_Controller {
 			$data['kmeans'] = $kmeans;
 			
 		}
+		
+		
+		
 		// var_dump($kmeans['jarak'], $kmeans['centroid']);die;
 		$this->load->view('admin/report/kmeans_calculation', $data);
 		
