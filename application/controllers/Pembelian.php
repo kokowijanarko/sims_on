@@ -28,6 +28,15 @@ class Pembelian extends CI_Controller {
 		 	
 	}
 	
+	public function list_print()
+	{	
+ 
+			$data['list'] = $this->pembelian_model->getPembelian();
+			// var_dump($data);die;
+			$this->load->view('admin/pembelian/print', $data);
+		 	
+	}
+	
 	public function add(){
  
 			

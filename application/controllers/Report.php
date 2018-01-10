@@ -110,6 +110,48 @@ class Report extends CI_Controller {
 		 			
 	}
 	
+	public function daily_list_print(){
+		 
+			$filter = array(
+				'date'=> '',
+				'date_end'=> '',
+				'user'=>'all'
+			);
+			if(!empty($_POST)){
+				if($_POST['date'] == '1970-01-01' || $_POST['date'] == ''){
+					$date = 'all';
+				}else{
+					$date = date('Y-m-d', strtotime($_POST['date']));
+				}
+				if($_POST['date_end'] == '1970-01-01' || $_POST['date_end'] == ''){
+					$date_end = 'all';
+				}else{
+					$date_end = date('Y-m-d', strtotime($_POST['date_end']));
+				}
+				
+				$filter = array(
+					'date'=> $date,
+					'date_end'=> $date_end,
+					'user'=>$_POST['user']
+				);
+				
+				$data['post'] = $_POST;
+			}else{
+				$data['post'] = $filter;
+			}
+			
+			$prod = $this->dasboard_model->getSellingStatistic($filter);
+			$txt = '';
+			$data['kmeans'] = $txt;
+			// var_dump($_POST, $filter);die;
+			$data['invoice'] = $this->report_model->getTransactionByDate($filter);
+			// var_dump($this->db->last_query());
+			$data['user'] = $this->report_model->getUser();
+			// var_dump($data);die;			
+			$this->load->view('admin/report/print', $data);
+		 			
+	}
+	
 	public function get_detail_invoice(){
 		
 		$result = $this->cashier_model->getDetailInvoiceByInvoiceCode($_POST['invo_number']);

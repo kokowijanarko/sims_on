@@ -138,8 +138,8 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
         </div>
 			
         <div class="box-body">
-			<div class="hide">
-				<a href="<?php echo site_url('report/print_report?date='. $date .'&fo='. $fo)?>" target="_blank"><button class="btn btn-sm btn-primary">Cetak Laporan</button></a>
+			<div>
+				<a href="<?php echo site_url('report/daily_list_print?date='. $date .'&fo='. $fo)?>" target="_blank"><button class="btn btn-sm btn-primary">Cetak Laporan</button></a>
 			</div>
 			<br>
 			<div>
@@ -151,9 +151,8 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 					<th>Atas Nama</th>				  
 					<th>Alamat</th>		
 					<th>tanggal</th>
-<th>harga</th>
-<th>ongkir</th>
-<th>diskon</th>					
+					<th>ongkir</th>
+					<th>diskon</th>					
 					<th>Total</th>
 					<th>User</th>
                 </tr>

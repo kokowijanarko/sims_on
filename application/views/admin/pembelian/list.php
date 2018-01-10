@@ -34,7 +34,10 @@ $this->load->view('template/sidebar');
 			<div class="col-md-12">
 				<?php echo isset($message)?$message:NULL?>
 			</div>
-			
+			<div>
+				<a href="<?php echo site_url('pembelian/list_print')?>" target="_blank"><button class="btn btn-sm btn-primary">Cetak Laporan</button></a>
+			</div>
+			<br />
 			<table id="tbl-inventory" class="table table-bordered table-hover">
                 <thead>
                 <tr>
