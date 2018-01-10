@@ -150,7 +150,10 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 					<th>Nomor Invoice</th>
 					<th>Atas Nama</th>				  
 					<th>Alamat</th>		
-					<th>tanggal</th>		
+					<th>tanggal</th>
+<th>harga</th>
+<th>ongkir</th>
+<th>diskon</th>					
 					<th>Total</th>
 					<th>User</th>
                 </tr>
@@ -167,6 +170,8 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 									<td>'. $val->nama_cust .'</td>
 									<td>'. $val->alamat_cust .'</td>
 									<td>'. $val->tgl_trans .'</td>
+									<td>'. $val->biaya_kirim .'</td>
+									<td>'. $val->diskon .'</td>
 									<td>'. $val->total .'</td>
 									<td>'. $val->nama_user .'</td>
 								</tr>

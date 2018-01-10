@@ -36,14 +36,14 @@ $this->load->view('template/sidebar');
 		<div class="box-body">
 			<div>
 				<p> 
-					1. Menentukan data set dan jumlah cluster (centroid). Nilai centroid awal dalam hal ini adalah klasifikasi peminat produk tingggi, sedang, dan rendah.
+					1. Menentukan data set dan jumlah cluster (centroid). Nilai centroid awal dalam hal ini adalah klasifikasi peminat produk tinggi, sedang dan rendah.
 					Nilai centroid awal ditentukan dengan perhitungan sebagai berikut: <br>
 					a. Centroid Tinggi = jumlah penjualan produk tertinggi.<br>
 					b. Centroid Rendah = jumlah penjualan produk terrendah.<br>
 					c. Centroid Sedang = (Centroid Tinggi + Centroid Rendah) : 2
 				</p>
 				<p> 
-					2. Mengalokasikan data sesuai dengan jumlah cluster yang telah ditentukan dengan cara mrnghitung jarak 
+					2. Mengalokasikan data sesuai dengan jumlah cluster yang telah ditentukan dengan cara menghitung jarak 
 					setiap data terhadap tiap-tiap centroid dengan rumus:<br>
 					<img height="35px" src="<?php echo base_url('assets/formula_img/jarak_centroid.JPG')?>">					
 					
@@ -195,8 +195,14 @@ $this->load->view('template/sidebar');
 		<div class="box-body">
 			<?php
 				foreach($final_kmeans as $idx=>$val){
-					
-					echo '<div><h4>'. strtoupper($idx) .'</h4>';
+                    If($idx == 'sedang'){
+						echo '<div><h4>TINGGI</h4>';
+					}elseIf($idx == 'tinggi'){
+						echo '<div><h4>SEDANG</h4>';						
+					}elseIf($idx == 'rendah'){
+						echo '<div><h4>RENDAH</h4>';		
+					}
+	
 					echo'
 						<table class="table">
 							<thead>
