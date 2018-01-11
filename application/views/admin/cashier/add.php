@@ -274,7 +274,7 @@ $this->load->view('template/js');
 			var prod_quantity = $('#jumlah').val(); 
 			var prod_sub_total = prod_price * prod_quantity;
 			
-			if(prod_quantity < prod_stock){
+			if(parseInt(prod_quantity) > parseInt(prod_stock)){
 				var msg_param = '<div class="alert alert-warning alert-dismissible">' +
 					'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
 					'<h4><i class="icon fa fa-check"></i> Jumlah Order Melebihi Stok !</h4>' +
