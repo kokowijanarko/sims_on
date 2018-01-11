@@ -331,9 +331,6 @@ $this->load->view('template/js');
 					method:'post',
 					data: params				
 				}).success(function(result){
-						console.log(result);
-						result = JSON.parse(result);
-						id_order.push(result);
 					if(alert('Order Sukses Dibuat')){
 						//
 					}else{

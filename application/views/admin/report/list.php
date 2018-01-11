@@ -168,7 +168,7 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 									<td><button  type="button" class="invoice_detail btn btn-sm btn-info">'.$val->kode_invoice.'</button></td>
 									<td>'. $val->nama_cust .'</td>
 									<td>'. $val->alamat_cust .'</td>
-									<td>'. $val->tgl_trans .'</td>
+									<td>'. date('d-m-Y', strtotime($val->tgl_trans)) .'</td>
 									<td>'. $val->biaya_kirim .'</td>
 									<td>'. $val->diskon .'</td>
 									<td>'. $val->total .'</td>
