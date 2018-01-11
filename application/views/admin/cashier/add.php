@@ -46,7 +46,11 @@ $this->load->view('template/sidebar');
 								<option value=''>--Pilih--</option>
 								<?php
 									foreach($produk as $val){
-										echo '<option value="'.$val->id_prod.'|'.$val->harga.'">'.$val->nama_prod .'</option>';
+										$not_active = '';
+										if($val->stok <= 0){
+											$not_active = 'disabled';
+										}
+										echo '<option value="'.$val->id_prod.'|'.$val->harga.'|'.$val->stok.'" '. $not_active.'>'.$val->nama_prod .' | '. $val->stok .' pcs </option>';
 									}
 								?>								
 							</select>
@@ -266,36 +270,49 @@ $this->load->view('template/js');
 			var prod = prod_val.split('|');			
 			var prod_price = prod[1];
 			var prod_id = prod[0];
+			var prod_stock = prod[2];
 			var prod_quantity = $('#jumlah').val(); 
 			var prod_sub_total = prod_price * prod_quantity;
-						
-			if(prod_id != ""){
-				product_id.push(prod_id);
-				product_name.push(prod_name);
-				price.push(prod_price);
-				quantity.push(prod_quantity);
-				sub_total.push(prod_sub_total);
-			}			
-			var total = 0;
-			for (var i = 0; i < sub_total.length; i++) {
-				total += sub_total[i] << 0;
-			}
-			$('#total').text(total);
-			$("#tbl-produk-order").find('tbody').empty();
-			var $table = $( "<tbody></tbody>" );
 			
-			for(i=0; i < product_id.length; i++){
-				var $line = $( "<tr></tr>" );
-				$line.append( $( "<td></td>" ).html(i + 1) );
-				$line.append( $( "<td></td>" ).html(product_name[i]) );
-				$line.append( $( "<td></td>" ).html(price[i]) );
-				$line.append( $( "<td></td>" ).html(quantity[i]) );
-				$line.append( $( "<td></td>" ).html(sub_total[i]) );
-				$table.append($line);
-				//console.log($line);
+			if(prod_quantity < prod_stock){
+				var msg_param = '<div class="alert alert-warning alert-dismissible">' +
+					'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
+					'<h4><i class="icon fa fa-check"></i> Jumlah Order Melebihi Stok !</h4>' +
+					'</div>';
+				//console.log(msg_param);
+				$('#msg').append(msg_param);
+			}else{
+				
+						
+				if(prod_id != ""){
+					product_id.push(prod_id);
+					product_name.push(prod_name);
+					price.push(prod_price);
+					quantity.push(prod_quantity);
+					sub_total.push(prod_sub_total);
+				}			
+				var total = 0;
+				for (var i = 0; i < sub_total.length; i++) {
+					total += sub_total[i] << 0;
+				}
+				$('#total').text(total);
+				$("#tbl-produk-order").find('tbody').empty();
+				var $table = $( "<tbody></tbody>" );
+				
+				for(i=0; i < product_id.length; i++){
+					var $line = $( "<tr></tr>" );
+					$line.append( $( "<td></td>" ).html(i + 1) );
+					$line.append( $( "<td></td>" ).html(product_name[i]) );
+					$line.append( $( "<td></td>" ).html(price[i]) );
+					$line.append( $( "<td></td>" ).html(quantity[i]) );
+					$line.append( $( "<td></td>" ).html(sub_total[i]) );
+					$table.append($line);
+					//console.log($line);
+				}
+				$table.appendTo($("#tbl-produk-order"));
+				is_prod_load = 1;
+			
 			}
-			$table.appendTo($("#tbl-produk-order"));
-			is_prod_load = 1;
 		});
 		
 		$('#proc-order').click(function(){		
