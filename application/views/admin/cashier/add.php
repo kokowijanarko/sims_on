@@ -50,7 +50,7 @@ $this->load->view('template/sidebar');
 										if($val->stok <= 0){
 											$not_active = 'disabled';
 										}
-										echo '<option value="'.$val->id_prod.'|'.$val->harga.'|'.$val->stok.'" '. $not_active.'>'.$val->nama_prod .' | '. $val->stok .' pcs </option>';
+										echo '<option value="'.$val->id_prod.'|'.$val->harga.'|'.$val->stok.'" '. $not_active.'>'.$val->nama_prod .' </option>';
 									}
 								?>								
 							</select>

@@ -69,6 +69,7 @@ $this->load->view('template/sidebar');
 		</div>
 	</div>
 	
+	
 	<div class="box">
 		<div class="box-header with-border">
 			<h3 class="box-title">Statistik Penjualan</h3>    
@@ -109,6 +110,7 @@ $this->load->view('template/sidebar');
 	
 	
 <?php
+	
 	$loop = 1;
 	foreach($kmeans['centroid'] as $idx=>$cent){
 		echo '
@@ -230,6 +232,60 @@ $this->load->view('template/sidebar');
 		
 		</div>
 	</div>
+	
+	<div class="box">
+		<div class="box-header with-border">
+			<h3 class="box-title">Testing</h3>    
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>						
+				<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+			</div>
+		</div>
+		<div class="box-body">
+			<?php
+				$last_centroid = $kmeans['centroid'][count($kmeans['centroid']) - 1];						
+			?>
+			
+			<input type='hidden' id="centroid_tinggi" value="<?php echo $last_centroid['tinggi']?>">
+			<input type='hidden' id="centroid_sedang" value="<?php echo $last_centroid['sedang']?>">
+			<input type='hidden' id="centroid_rendah" value="<?php echo $last_centroid['rendah']?>">
+			
+			<table>
+				<tr>
+					<td>Nama produk Baru</td>
+					<td>:</td>
+					<td><input type="text" id="prod_baru" placeholder="Produk Baru"/></td>
+				</tr>
+				<tr>
+					<td>Jumlah Penjualan</td>
+					<td>:</td>
+					<td><input type="number" min="0" id="jml_penjualan" placeholder="Jumlah Terjual"/></td>
+				</tr>
+				<tr>
+					
+					<td>
+						<button id="hitung" class="btn btn-default btn-sm">Hitung</button>
+					</td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>	
+			
+			<table class="table" id="new_table">
+				<thead>
+				<tr>
+					<th>produk</th>
+					<th>jumlah terjual</th>
+					<th>Jarak ke centroid Tinggi</th>
+					<th>Jarak ke centroid Sedang</th>
+					<th>Jarak ke centroid Rendah</th>
+				</tr>
+				<thead>
+				<tbody id="hasil_hitung">
+				</tbody>
+			</table>
+		</div>
+	</div>
 		
 </section><!-- /.content -->
 
@@ -248,14 +304,7 @@ $this->load->view('template/js');
 
 <script>
   jQuery(function($) {
-	$('#datepicker').datepicker({			
-		autoclose: true
-	});
-	$('#date_end').datepicker({			
-		autoclose: true
-	});
-	
-    $('.table').DataTable({
+	  $('.table').DataTable({
       "paging": true,
       "lengthChange": false,
       "searching": false,
@@ -266,58 +315,31 @@ $this->load->view('template/js');
 	
 	$('.auto').autoNumeric('init');
 	
-	
-	$('.invoice_detail').click(function(){
-		$('#box_detail').removeClass('hide');
+	$('#hitung').click(function(){
 		
-		var invoice_number = $(this).text();
-		console.log(invoice_number);
-		$.ajax({
-			data:{'invo_number':invoice_number},
-			method:'post',
-			url:'<?php echo site_url('cashier/get_detail_invoice')?>'
-		}).success(function(result){			
+		
+		var prod_baru = $('#prod_baru').val();
+		var jml_penjualan = $('#jml_penjualan').val();
+		
+		// if(prod_baru && jml_penjualan){
 			
-			result = JSON.parse(result);
-			console.log(result);
 			
-			var no_nota = $('#no_nota').text(result['penjualan']['kode_invoice']);
-			var tgl_order = $('#ord_date_order').text(result['penjualan']['tgl_trans']);
-			var nama = $('#ord_name').text(result['penjualan']['nama_cust']);
-			var alamat = $('#ord_address').text(result['penjualan']['alamat_cust']);
-			var kontak = $('#ord_contact').text(result['penjualan']['nohp_cust']);			
-			var total = $('#total').text(result['penjualan']['ttl_byr']);
-			var total = $('#ongkir').text(result['penjualan']['biaya_kirim']);
-			var total = $('#diskon').text(result['penjualan']['diskon']);
-			
-			$( "tbody#order_detail_tbody" ).empty();
-			$table = $( "<tbody id=order_detail_tbody></tbody>" );
-			
-			for(i=0; i < result['detail'].length; i++){
-				//var sub_total = result['detail'][i]['orderdetail_quantity'] * result['detail'][i]['inv_price'];
-				var $line = $( "<tr></tr>" );
-				$line.append( $( "<td></td>" ).html(i + 1) );
-				$line.append( $( "<td></td>" ).html(result['detail'][i]['nama_prod']) );
-				$line.append( $( "<td class='auto'></td>" ).html(result['detail'][i]['harga']));
-				$line.append( $( "<td></td>" ).html(result['detail'][i]['jml_jual']));
-				$line.append( $( "<td></td>" ).html(result['detail'][i]['total']));
-				$table.append($line);
-				//console.log($line);
-			}
-			$table.appendTo($("#tbl-produk-order"));
-			
-			$('#box_header_detail').removeClass('hide');
-			$('#box_content_detail').removeClass('hide');
-		});
-	});
+		// }
+		var c_tinggi = $('#centroid_tinggi').val();
+		var c_sedang = $('#centroid_sedang').val();
+		var c_rendah = $('#centroid_rendah').val();
+		
+		var tinggi = Math.sqrt((jml_penjualan - c_tinggi)*(jml_penjualan - c_tinggi));
+		var sedang = Math.sqrt((jml_penjualan - c_sedang)*(jml_penjualan - c_sedang));
+		var rendah = Math.sqrt((jml_penjualan - c_rendah)*(jml_penjualan - c_rendah));
+		
+		console.log(tinggi);
+		
+		$('#hasil_hitung').empty();
+		$('#hasil_hitung').append('<td>'+prod_baru+'</td><td>'+jml_penjualan+'</td><td>'+rendah+'</td><td>'+sedang+'</td><td>'+tinggi+'</td>');
+	})
 	
-	// $.ajax({
-			// url:'<?php echo site_url('dashboard/kmeans/')?>'
-		// }).success(function(result){
-			// result = JSON.parse(result);
-			// console.log(result);
-			// $('#table_kmeans').append(result);
-		// });	
+	
   });
 </script>
 <?php
