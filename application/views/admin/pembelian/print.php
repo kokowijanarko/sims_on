@@ -14,7 +14,7 @@
 	
 	<body>
 		<h3>
-			Daftar Penjualan
+			Daftar Pembelian
 		</h3>
 		<table>
 			<thead>

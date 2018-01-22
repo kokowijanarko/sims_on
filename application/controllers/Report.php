@@ -10,7 +10,7 @@ class Report extends CI_Controller {
 		$this->load->model('user_model');
 		$this->load->model('dasboard_model');
 		$this->load->library('authex');
-		$this->load->library('kmeans');
+		$this->load->library('kmeans'); //library kmeans
 		$login = $this->authex->logged_in();
 		if(!$login){
 			redirect(site_url(''));
@@ -61,7 +61,7 @@ class Report extends CI_Controller {
 			
 			$prod = $this->dasboard_model->getSellingStatistic($filter);
 			// var_dump($this->db->last_query());
-			$data_kmeans = $this->kmeans->hitung($prod);
+			$data_kmeans = $this->kmeans->hitung($prod); // pemanggilan kmeans yg library $prod = produk, data dlm kmeans
 			$txt = '';
 			if($data_kmeans['msg'] !== ''){
 				$txt = $data_kmeans['msg'];

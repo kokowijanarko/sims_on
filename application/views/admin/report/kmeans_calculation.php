@@ -38,9 +38,9 @@ $this->load->view('template/sidebar');
 				<p> 
 					1. Menentukan data set dan jumlah cluster (centroid). Nilai centroid awal dalam hal ini adalah klasifikasi peminat produk tinggi, sedang dan rendah.
 					Nilai centroid awal ditentukan dengan perhitungan sebagai berikut: <br>
-					a. Centroid Tinggi = jumlah penjualan produk tertinggi.<br>
-					b. Centroid Rendah = jumlah penjualan produk terrendah.<br>
-					c. Centroid Sedang = (Centroid Tinggi + Centroid Rendah) : 2
+					a. Centroid Tinggi = jumlah transaksi penjualan produk tertinggi.<br>
+					b. Centroid Rendah = jumlah transaksi penjualan produk terrendah.<br>
+					c. Centroid Sedang = (jumlah transaksi penjualan Tinggi + jumlah transaksi penjualan Rendah) : 2
 				</p>
 				<p> 
 					2. Mengalokasikan data sesuai dengan jumlah cluster yang telah ditentukan dengan cara menghitung jarak 
@@ -69,7 +69,6 @@ $this->load->view('template/sidebar');
 		</div>
 	</div>
 	
-	
 	<div class="box">
 		<div class="box-header with-border">
 			<h3 class="box-title">Statistik Penjualan</h3>    
@@ -85,7 +84,7 @@ $this->load->view('template/sidebar');
 					<tr>
 						<th>No</th>
 						<th>Produk</th>
-						<th>Jumlah Terjual</th>
+						<th>Jumlah Transaksi</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -110,7 +109,6 @@ $this->load->view('template/sidebar');
 	
 	
 <?php
-	
 	$loop = 1;
 	foreach($kmeans['centroid'] as $idx=>$cent){
 		echo '
@@ -157,9 +155,9 @@ $this->load->view('template/sidebar');
 					<th>NO</th>
 					<th>Produk</th>
 					<th>Jumlah</th>
+					<th>Tinggi</th>
 					<th>Rendah</th>
 					<th>Sedang</th>
-					<th>Tinggi</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -171,9 +169,9 @@ $this->load->view('template/sidebar');
 					<td>'. $no .'</td>
 					<td>'. $space['product_name'] .'</td>
 					<td>'. $space['jumlah'] .'</td>
-					<td>'. $space[0] .'</td>
 					<td>'. $space[1] .'</td>
 					<td>'. $space[2] .'</td>
+					<td>'. $space[0] .'</td>
 				</tr>	
 				';
 			$no++;
@@ -200,9 +198,9 @@ $this->load->view('template/sidebar');
                     If($idx == 'sedang'){
 						echo '<div><h4>TINGGI</h4>';
 					}elseIf($idx == 'tinggi'){
-						echo '<div><h4>SEDANG</h4>';						
+						echo '<div><h4>RENDAH</h4>';						
 					}elseIf($idx == 'rendah'){
-						echo '<div><h4>RENDAH</h4>';		
+						echo '<div><h4>SEDANG</h4>';		
 					}
 	
 					echo'
@@ -228,14 +226,10 @@ $this->load->view('template/sidebar');
 				}
 				
 			?>
-		
-		
-		</div>
-	</div>
 	
 	<div class="box">
 		<div class="box-header with-border">
-			<h3 class="box-title">Testing</h3>    
+			<h3 class="box-title">PENGUJIAN</h3>    
 			<div class="box-tools pull-right">
 				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>						
 				<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -243,18 +237,21 @@ $this->load->view('template/sidebar');
 		</div>
 		<div class="box-body">
 			<?php
-				$last_centroid = $kmeans['centroid'][count($kmeans['centroid']) - 1];						
+				$last_centroid = $kmeans['centroid'][count($kmeans['centroid']) - 1];		//pemanggilan nilai centroid dr iterasi sebelumnya				
 			?>
 			
-			<input type='hidden' id="centroid_tinggi" value="<?php echo $last_centroid['tinggi']?>">
-			<input type='hidden' id="centroid_sedang" value="<?php echo $last_centroid['sedang']?>">
-			<input type='hidden' id="centroid_rendah" value="<?php echo $last_centroid['rendah']?>">
+			<td>tinggi: </td>
+			<input type='numerik' id="centroid_tinggi" value="<?php echo $last_centroid['tinggi']?>">
+			<td>rendah : </td>
+			<input type='numerik' id="centroid_rendah" value="<?php echo $last_centroid['rendah']?>">
+			<td>sedang : </td>
+			<input type='numerik' id="centroid_sedang" value="<?php echo $last_centroid['sedang']?>">
 			
 			<table>
 				<tr>
 					<td>Nama produk Baru</td>
 					<td>:</td>
-					<td><input type="text" id="prod_baru" placeholder="Produk Baru"/></td>
+					<td><input type="text" id="prod_baru" placeholder="Produk Baru"/></td> <!--input type adl text, id dr textbox adl prod_baru-->
 				</tr>
 				<tr>
 					<td>Jumlah Penjualan</td>
@@ -274,16 +271,18 @@ $this->load->view('template/sidebar');
 			<table class="table" id="new_table">
 				<thead>
 				<tr>
-					<th>produk</th>
+					<th>produk</th> 
 					<th>jumlah terjual</th>
-					<th>Jarak ke centroid Tinggi</th>
-					<th>Jarak ke centroid Sedang</th>
-					<th>Jarak ke centroid Rendah</th>
+					<th>Anggota Cluster Tinggi</th>
+					<th>Anggota Cluster Rendah</th>
+					<th>Anggota Cluster Sedang</th>
 				</tr>
 				<thead>
 				<tbody id="hasil_hitung">
 				</tbody>
 			</table>
+		</div>
+	</div>	
 		</div>
 	</div>
 		
@@ -303,12 +302,13 @@ $this->load->view('template/js');
 <script src="<?php echo base_url('assets/AutoNumeric/autoNumeric.js')?>" type="text/javascript"></script>
 
 <script>
-  jQuery(function($) {
+
+jQuery(function($) {
 	  $('.table').DataTable({
       "paging": true,
       "lengthChange": false,
       "searching": false,
-      "ordering": true,
+      "ordering": false,
       "info": true,
       "autoWidth": true
     });
@@ -316,27 +316,22 @@ $this->load->view('template/js');
 	$('.auto').autoNumeric('init');
 	
 	$('#hitung').click(function(){
-		
-		
-		var prod_baru = $('#prod_baru').val();
-		var jml_penjualan = $('#jml_penjualan').val();
-		
-		// if(prod_baru && jml_penjualan){
 			
-			
-		// }
-		var c_tinggi = $('#centroid_tinggi').val();
-		var c_sedang = $('#centroid_sedang').val();
-		var c_rendah = $('#centroid_rendah').val();
+		var prod_baru = $('#prod_baru').val(); //var prod_baru = ambil value dr form yg mempunyai id prod_baru
+		var jml_penjualan = $('#jml_penjualan').val(); //var jml_penjualan = ambil value dr form yg mempunyai id jml_penjualan
 		
-		var tinggi = Math.sqrt((jml_penjualan - c_tinggi)*(jml_penjualan - c_tinggi));
-		var sedang = Math.sqrt((jml_penjualan - c_sedang)*(jml_penjualan - c_sedang));
-		var rendah = Math.sqrt((jml_penjualan - c_rendah)*(jml_penjualan - c_rendah));
+		var c_tinggi = $('#centroid_tinggi').val(); //var c_tinggi = ambil value dr form yg mempunyai id centroid_tinggi
+		var c_sedang = $('#centroid_sedang').val(); //var c_sedang = ambil value dr form yg mempunyai id centroid_sedang
+		var c_rendah = $('#centroid_rendah').val(); //var c_rendah = ambil value dr form yg mempunyai id centroid_rendah
+		
+		var tinggi = Math.sqrt((jml_penjualan - c_tinggi)*(jml_penjualan - c_tinggi)); //var tinggi = rumus matematika dr akar(jml_penjualan - c_tinggi)^
+		var sedang = Math.sqrt((jml_penjualan - c_sedang)*(jml_penjualan - c_sedang)); //var sedang = rumus matematika dr akar(jml_penjualan - c_sedang)^
+		var rendah = Math.sqrt((jml_penjualan - c_rendah)*(jml_penjualan - c_rendah)); //var sedang = rumus matematika dr akar(jml_penjualan - c_rendah)^
 		
 		console.log(tinggi);
 		
 		$('#hasil_hitung').empty();
-		$('#hasil_hitung').append('<td>'+prod_baru+'</td><td>'+jml_penjualan+'</td><td>'+rendah+'</td><td>'+sedang+'</td><td>'+tinggi+'</td>');
+		$('#hasil_hitung').append('<td>'+prod_baru+'</td><td>'+jml_penjualan+'</td><td>'+sedang+'</td><td>'+tinggi+'</td><td>'+rendah+'</td>');
 	})
 	
 	
