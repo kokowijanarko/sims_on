@@ -169,9 +169,9 @@ $fo = isset($post['user']) ? $post['user'] : 'all';
 									<td>'. $val->nama_cust .'</td>
 									<td>'. $val->alamat_cust .'</td>
 									<td>'. date('d-m-Y', strtotime($val->tgl_trans)) .'</td>
-									<td>'. $val->biaya_kirim .'</td>
+									<td>'. number_format($val->biaya_kirim, 0, ',', '.').'</td>
 									<td>'. $val->diskon .'</td>
-									<td>'. $val->total .'</td>
+									<td>'. number_format($val->total, 0, ',', '.') .'</td>
 									<td>'. $val->nama_user .'</td>
 								</tr>
 							';
@@ -328,9 +328,9 @@ $this->load->view('template/js');
 			var nama = $('#ord_name').text(result['penjualan']['nama_cust']);
 			var alamat = $('#ord_address').text(result['penjualan']['alamat_cust']);
 			var kontak = $('#ord_contact').text(result['penjualan']['nohp_cust']);			
-			var total = $('#total').text(result['penjualan']['ttl_byr']);
-			var total = $('#ongkir').text(result['penjualan']['biaya_kirim']);
-			var total = $('#diskon').text(result['penjualan']['diskon']);
+			var total = $('#total').text(addCommas(result['penjualan']['ttl_byr']));
+			var ongkir = $('#ongkir').text(addCommas(result['penjualan']['biaya_kirim']));
+			var diskon = $('#diskon').text(addCommas(result['penjualan']['diskon']));
 			
 			$( "tbody#order_detail_tbody" ).empty();
 			$table = $( "<tbody id=order_detail_tbody></tbody>" );
@@ -340,9 +340,9 @@ $this->load->view('template/js');
 				var $line = $( "<tr></tr>" );
 				$line.append( $( "<td></td>" ).html(i + 1) );
 				$line.append( $( "<td></td>" ).html(result['detail'][i]['nama_prod']) );
-				$line.append( $( "<td class='auto'></td>" ).html(result['detail'][i]['harga']));
+				$line.append( $( "<td class='auto'></td>" ).html(addCommas(result['detail'][i]['harga'])));
 				$line.append( $( "<td></td>" ).html(result['detail'][i]['jml_jual']));
-				$line.append( $( "<td></td>" ).html(result['detail'][i]['total']));
+				$line.append( $( "<td></td>" ).html(addCommas(result['detail'][i]['total'])));
 				$table.append($line);
 				//console.log($line);
 			}
@@ -361,6 +361,18 @@ $this->load->view('template/js');
 			// $('#table_kmeans').append(result);
 		// });	
   });
+  
+	function addCommas(nStr) {
+		nStr += '';
+		x = nStr.split('.');
+		x1 = x[0];
+		x2 = x.length > 1 ? ',' + x[1] : '';
+		var rgx = /(\d+)(\d{3})/;
+		while (rgx.test(x1)) {
+				x1 = x1.replace(rgx, '$1' + '.' + '$2');
+		}
+		return x1 + x2;
+	}
 </script>
 <?php
 $this->load->view('template/foot');

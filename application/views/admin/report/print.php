@@ -41,10 +41,10 @@
 								<td>'.$val->kode_invoice.'</td>
 								<td>'. $val->nama_cust .'</td>
 								<td>'. $val->alamat_cust .'</td>
-								<td>'. $val->tgl_trans .'</td>
-								<td>'. $val->biaya_kirim .'</td>
-								<td>'. $val->diskon .'</td>
-								<td>'. $val->total .'</td>
+								<td>'. date('d-m-Y', strtotime($val->tgl_trans)) .'</td>
+								<td align="right">'. number_format($val->biaya_kirim, 0, ',', '.') .'</td>
+								<td align="right">'. number_format($val->diskon, 0, ',', '.') .'</td>
+								<td align="right">'. number_format($val->total, 0, ',', '.') .'</td>
 								<td>'. $val->nama_user .'</td>
 							</tr>
 						';
