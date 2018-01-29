@@ -24,9 +24,9 @@
 					<th>Atas Nama</th>				  
 					<th>Alamat</th>		
 					<th>tanggal</th>
-					<th>ongkir</th>
-					<th>diskon</th>					
-					<th>Total</th>
+					<th>ongkir (Rp)</th>
+					<th>diskon (Rp)</th>					
+					<th>Total (Rp)</th>
 					<th>User</th>
 				</tr>
 			</thead>

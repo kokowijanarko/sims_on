@@ -196,7 +196,7 @@ $this->load->view('template/sidebar');
 			<?php
 				foreach($final_kmeans as $idx=>$val){
                     If($idx == 'sedang'){
-						echo '<div><h4>TINGGI</h4>';
+						echo '<div><h4>TINGGI</h4>';  
 					}elseIf($idx == 'tinggi'){
 						echo '<div><h4>RENDAH</h4>';						
 					}elseIf($idx == 'rendah'){
@@ -246,7 +246,9 @@ $this->load->view('template/sidebar');
 			<input type='numerik' id="centroid_rendah" value="<?php echo $last_centroid['rendah']?>">
 			<td>sedang : </td>
 			<input type='numerik' id="centroid_sedang" value="<?php echo $last_centroid['sedang']?>">
-			
+			<div class="msg_testing">
+				
+			</div>
 			<table>
 				<tr>
 					<td>Nama produk Baru</td>
@@ -280,7 +282,7 @@ $this->load->view('template/sidebar');
 				<thead>
 				<tbody id="hasil_hitung">
 				</tbody>
-			</table>
+			</table>			
 		</div>
 	</div>	
 		</div>
@@ -313,6 +315,8 @@ jQuery(function($) {
       "autoWidth": true
     });
 	
+	
+	
 	$('.auto').autoNumeric('init');
 	
 	$('#hitung').click(function(){
@@ -328,14 +332,33 @@ jQuery(function($) {
 		var sedang = Math.sqrt((jml_penjualan - c_sedang)*(jml_penjualan - c_sedang)); //var sedang = rumus matematika dr akar(jml_penjualan - c_sedang)^
 		var rendah = Math.sqrt((jml_penjualan - c_rendah)*(jml_penjualan - c_rendah)); //var sedang = rumus matematika dr akar(jml_penjualan - c_rendah)^
 		
-		console.log(tinggi);
-		
-		$('#hasil_hitung').empty();
-		$('#hasil_hitung').append('<td>'+prod_baru+'</td><td>'+jml_penjualan+'</td><td>'+sedang+'</td><td>'+tinggi+'</td><td>'+rendah+'</td>');
+		if(tinggi && sedang && rendah){
+			var t = parseInt(tinggi);
+			var s = parseInt(sedang);
+			var r = parseInt(rendah);
+			var kesimpulan = '';
+			
+			if ((t < s) && (t < r)){
+				kesimpulan ='Anggota Cluster Rendah';   
+			}else if((s<t)&&(s<r)){ 
+				kesimpulan ='Anggota Cluster Tinggi';
+			}else if((r<t)&&(r<s)){
+				kesimpulan ='Anggota Cluster Sedang';
+			}
+					
+			$('.msg_testing').empty();
+			$('#hasil_hitung').empty();			
+			$('#hasil_hitung').append('<td>'+prod_baru+'</td><td>'+jml_penjualan+'</td><td>'+sedang+'</td><td>'+tinggi+'</td><td>'+rendah+'</td>');	
+			
+			var msg_param = '<div class="alert alert-success alert-dismissible">' +
+				'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
+				'<h4><i class="icon fa fa-check"></i>'+ kesimpulan +'</h4>' +
+				'</div>';
+			$('.msg_testing').append(msg_param);			
+		}				
 	})
-	
-	
   });
+ 
 </script>
 <?php
 $this->load->view('template/foot');
